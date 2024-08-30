@@ -1,0 +1,7 @@
+python-dotenv
+sqlalchemy
+aiogram
+numpy
+openpyxl
+pandas
+sentry-sdk
