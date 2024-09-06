@@ -4,7 +4,6 @@ from typing import Optional, List
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_engine
 
-
 engine = create_async_engine(url="sqlite+aiosqlite:///app/database/db.sqlite3")
 
 async_session = async_sessionmaker(engine)
@@ -19,6 +18,9 @@ class Manager(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     tg_id: Mapped[int] = mapped_column(BigInteger)
+    tg_username: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+
+    admin: Mapped[bool] = mapped_column(BOOLEAN())
 
 
 class Dancer(Base):
@@ -30,10 +32,6 @@ class Dancer(Base):
     name = Column(String(50), nullable=True)
     surname = Column(String(50), nullable=True)
     full_name = Column(String(101), nullable=True)
-
-    couple_id = Column(Integer, ForeignKey('couples.id'))
-
-    couples = relationship('Couple', foreign_keys=[couple_id])
 
 
 class Couple(Base):
@@ -50,33 +48,35 @@ class Couple(Base):
 
 
 class Event(Base):
-    __tablename__ = "events" # Table name
+    __tablename__ = "events"  # Table name
 
-    id: Mapped[int] = mapped_column(primary_key=True) # Event id
-    name: Mapped[str] = mapped_column(String(50)) # Event name
-    description: Mapped[Optional[str]] = mapped_column(String(255), nullable=True) # Event description
-    date_start: Mapped[date] = mapped_column(DATE()) # Event start date
-    date_end: Mapped[date] = mapped_column(DATE()) # Event end date
-    id_schedule: Mapped[int] = mapped_column(ForeignKey('schedule_events.id'))# Schedule id
+    id: Mapped[int] = mapped_column(primary_key=True)  # Event id
+    name: Mapped[str] = mapped_column(String(50))  # Event name
+    description: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)  # Event description
+    date_start: Mapped[date] = mapped_column(DATE())  # Event start date
+    date_end: Mapped[date] = mapped_column(DATE())  # Event end date
+    id_schedule: Mapped[int] = mapped_column(ForeignKey('schedule_events.id'))  # Schedule id
 
-    id_manager: Mapped[int] = mapped_column(ForeignKey('managers.id')) # Manager id
+    id_manager: Mapped[int] = mapped_column(ForeignKey('managers.id'))  # Manager id
 
-    coaches: Mapped[List["Coach"]] = relationship("Coach", back_populates="event", cascade="all, delete-orphan")# Coaches of the event
-    schedule: Mapped["ScheduleEvent"] = relationship("ScheduleEvent", back_populates="events") # Schedule of the event
+    coaches: Mapped[List["Coach"]] = relationship("Coach", back_populates="event",
+                                                  cascade="all, delete-orphan")  # Coaches of the event
+    schedule: Mapped["ScheduleEvent"] = relationship("ScheduleEvent", back_populates="events")  # Schedule of the event
 
 
 class ScheduleEvent(Base):
     __tablename__ = "schedule_events"  # Table name
 
-    id: Mapped[int] = mapped_column(primary_key=True) # Schedule id
-    dates: Mapped[str] = mapped_column(String(500)) # List of dates
-    start_time: Mapped[str] = mapped_column(String(500)) # List of start times
-    end_time: Mapped[str] = mapped_column(String(500)) # List of end times
-    lesson_duration: Mapped[int] = mapped_column(Integer()) # Lesson duration in minutes
-    breaks: Mapped[str] = mapped_column(String(1000)) # List of breaks
-    full_schedule: Mapped[str] = mapped_column(String(1000)) # Full schedule
+    id: Mapped[int] = mapped_column(primary_key=True)  # Schedule id
+    dates: Mapped[str] = mapped_column(String(500))  # List of dates
+    start_time: Mapped[str] = mapped_column(String(500))  # List of start times
+    end_time: Mapped[str] = mapped_column(String(500))  # List of end times
+    lesson_duration: Mapped[int] = mapped_column(Integer())  # Lesson duration in minutes
+    breaks: Mapped[str] = mapped_column(String(1000))  # List of breaks
+    full_schedule: Mapped[str] = mapped_column(String(1000))  # Full schedule
 
-    events: Mapped[List["Event"]] = relationship("Event", back_populates="schedule", cascade="all, delete-orphan") # Events with this schedule
+    events: Mapped[List["Event"]] = relationship("Event", back_populates="schedule",
+                                                 cascade="all, delete-orphan")  # Events with this schedule
 
 
 class Coach(Base):
@@ -91,6 +91,7 @@ class Coach(Base):
     currency: Mapped[str] = mapped_column(ForeignKey('currencies.id'))
     program: Mapped[bool] = mapped_column(BOOLEAN())  # True - Latin, False - Ballroom
     dates: Mapped[str] = mapped_column(String(500))
+    lesson_restrictions: Mapped[int] = mapped_column(Integer())
 
     event: Mapped["Event"] = relationship("Event", back_populates="coaches")
     lessons: Mapped[List["Lesson"]] = relationship("Lesson", back_populates="coach", cascade="all, delete-orphan")
@@ -135,6 +136,19 @@ class BookedLesson(Base):
     lesson: Mapped["Lesson"] = relationship("Lesson", back_populates="booked_lessons")
     coach: Mapped["Coach"] = relationship("Coach", back_populates="booked_lessons")
     couple: Mapped["Couple"] = relationship("Couple", back_populates="booked_lessons")
+
+
+class Payment(Base):
+    __tablename__ = "payments"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    time_of_payment: Mapped[datetime] = mapped_column(String(50))
+    manager_nickname: Mapped[str] = mapped_column(String(50))
+    couple_name: Mapped[str] = mapped_column(String(101))
+    coach_name: Mapped[str] = mapped_column(String(101))
+    lesson_date: Mapped[datetime] = mapped_column(DATETIME())
+    price: Mapped[int] = mapped_column(Integer())
+    currency: Mapped[str] = mapped_column(String())
 
 
 async def async_main():

@@ -5,7 +5,6 @@ from typing import Callable, Any, Dict, Awaitable
 from app.database.requests.check_user import check_user
 
 
-
 class AccessControlMiddleware(BaseMiddleware):
     async def __call__(
         self,

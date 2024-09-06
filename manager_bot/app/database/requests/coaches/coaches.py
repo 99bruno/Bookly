@@ -19,7 +19,8 @@ async def get_all_coaches() -> list:
                     "currency": coach.currency,
                     "dates": coach.dates,
                     "name": coach.firstname,
-                    "surname": coach.lastname
+                    "surname": coach.lastname,
+                    "lesson_restrictions": coach.lesson_restrictions
                 }
                 for coach in coaches
             ]

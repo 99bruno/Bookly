@@ -23,8 +23,8 @@ coaches_program_choose_keyboard = InlineKeyboardMarkup(
             InlineKeyboardButton(text="Ballroom", callback_data="coaches_program_choose_Ballroom")
         ],
         [
-            InlineKeyboardButton(text="Повернутись назад", callback_data="return_to_check_camp_info"),
-            InlineKeyboardButton(text="В головне меню", callback_data="back_to_main_menu")
+            InlineKeyboardButton(text="Назад 🔙", callback_data="return_to_check_camp_info"),
+            InlineKeyboardButton(text="В головне меню 🏡", callback_data="back_to_main_menu")
         ],
     ]
 )
@@ -40,8 +40,8 @@ def create_keyboard_for_coaches_camp_info(coaches: list):
         keyboard.append(row)
 
     keyboard.append([
-        InlineKeyboardButton(text="Повернутись назад", callback_data='return_to_program_choose'),
-        InlineKeyboardButton(text="В головне меню", callback_data='back_to_main_menu'),
+        InlineKeyboardButton(text="Назад 🔙", callback_data='return_to_program_choose'),
+        InlineKeyboardButton(text="В головне меню 🏡", callback_data='back_to_main_menu'),
 
     ])
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
@@ -53,8 +53,8 @@ coach_info_keyboard = InlineKeyboardMarkup(
             InlineKeyboardButton(text="Переглянути ціну", callback_data="view_price")
         ],
         [
-            InlineKeyboardButton(text="Повернутись назад", callback_data="return_to_coaches_list"),
-            InlineKeyboardButton(text="В головне меню", callback_data="back_to_main_menu")
+            InlineKeyboardButton(text="Назад 🔙", callback_data="return_to_coaches_list"),
+            InlineKeyboardButton(text="В головне меню 🏡", callback_data="back_to_main_menu")
         ],
     ]
 )
@@ -63,10 +63,10 @@ coach_info_keyboard = InlineKeyboardMarkup(
 coach_view_price_keyboard = InlineKeyboardMarkup(
     inline_keyboard=[
         [
-            InlineKeyboardButton(text="Ціни всіх викладачів", callback_data="compare_prices")
+            InlineKeyboardButton(text="Ціни всіх викладачів 💸", callback_data="compare_prices")
         ],
         [
-            InlineKeyboardButton(text="В головне меню", callback_data="back_to_main_menu")
+            InlineKeyboardButton(text="В головне меню 🏡", callback_data="back_to_main_menu")
         ],
     ]
 )
@@ -74,8 +74,8 @@ coach_view_price_keyboard = InlineKeyboardMarkup(
 coach_compare_price_keyboard = InlineKeyboardMarkup(
     inline_keyboard=[
         [
-            InlineKeyboardButton(text="Програми", callback_data="return_to_program_choose"),
-            InlineKeyboardButton(text="В головне меню", callback_data="back_to_main_menu")
+            InlineKeyboardButton(text="Програми 🕺", callback_data="return_to_program_choose"),
+            InlineKeyboardButton(text="В головне меню 🏡", callback_data="back_to_main_menu")
         ],
     ]
 )

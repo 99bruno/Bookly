@@ -9,34 +9,59 @@ from app.scripts.auxiliary_functions.delete_messages import delete_previous_mess
 
 from app.templates.start.start import start_message, back_main_menu_message
 
+from sentry_logging.sentry_setup import sentry_sdk
+
 router = Router()
 
 
 @router.message(Command("start"))
 async def command_start_handler(message: types.Message,
-                                bot: Bot,
-                                latest_messages: dict,
                                 state: FSMContext) -> None:
-    await state.clear()
+    try:
+        await state.clear()
 
-    await delete_previous_messages_bot(bot, message.chat.id, message.from_user.id, latest_messages)
+        await message.answer(start_message, reply_markup=start_keyboard)
 
-    answer = await message.answer(start_message, reply_markup=start_keyboard)
+    except Exception as e:
 
-    latest_messages[message.from_user.id] = (answer.message_id, message.message_id)
-    await delete_previous_messages_user(bot, message.chat.id, message.from_user.id, latest_messages)
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", message.from_user.id)
+            scope.set_extra("username", message.from_user.username)
+
+        sentry_sdk.capture_exception(e)
 
 
 @router.message(F.text == "Back to the main menu")
 async def command_back_to_main_menu_handler(message: types.Message,
-                                            bot: Bot,
-                                            latest_messages: dict,
                                             state: FSMContext) -> None:
-    await state.clear()
+    try:
 
-    await delete_previous_messages_bot(bot, message.chat.id, message.from_user.id, latest_messages)
+        await state.clear()
 
-    answer = await message.answer(back_main_menu_message, reply_markup=start_keyboard)
+        await message.answer(back_main_menu_message, reply_markup=start_keyboard)
 
-    latest_messages[message.from_user.id] = (answer.message_id, message.message_id)
-    await delete_previous_messages_user(bot, message.chat.id, message.from_user.id, latest_messages)
+    except Exception as e:
+
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", message.from_user.id)
+            scope.set_extra("username", message.from_user.username)
+
+        sentry_sdk.capture_exception(e)
+
+
+@router.callback_query(lambda callback_query: callback_query.data == "back_to_main_menu")
+async def command_back_to_main_menu_handler(callback: types.CallbackQuery,
+                                            state: FSMContext) -> None:
+    try:
+        await state.clear()
+
+        await callback.message.answer(back_main_menu_message, reply_markup=start_keyboard)
+
+    except Exception as e:
+
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", callback.from_user.id)
+            scope.set_extra("username", callback.from_user.username)
+
+        sentry_sdk.capture_exception(e)
+
