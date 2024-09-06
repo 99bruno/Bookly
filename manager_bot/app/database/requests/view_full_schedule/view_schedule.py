@@ -3,7 +3,7 @@ from sqlalchemy.orm import aliased
 import pandas as pd
 import numpy as np
 import ast
-from app.database.models import async_session, Lesson, BookedLesson, Couple, Dancer, Coach, ScheduleEvent
+from app.database.models import async_session, Lesson, BookedLesson, Couple, Dancer, Coach, ScheduleEvent, Payment
 
 async def fetch_lessons_with_full_info():
     Dancer1 = aliased(Dancer, name='Dancer1')
@@ -46,6 +46,12 @@ async def fetch_lessons_with_full_info():
         dancers = await session.execute(select(Dancer.full_name, Dancer.tg_username, Dancer.phone))
         dancers = dancers.fetchall()
 
+        result = await session.execute(select(Payment.time_of_payment,
+                                              Payment.manager_nickname,
+                                              Payment.couple_name,
+                                              Payment.coach_name, Payment.lesson_date, Payment.price, Payment.currency))
+        payments = result.fetchall()
+
     # Convert to Pandas DataFrame
     df = pd.DataFrame(lessons, columns=[
         'id', 'id_coach', 'available', 'date', 'start_time', 'end_time', 'price', 'currency', 'program',
@@ -59,6 +65,7 @@ async def fetch_lessons_with_full_info():
 
     with pd.ExcelWriter('app/database/schedule.xlsx') as writer:
         pd.DataFrame(dancers).to_excel(writer, sheet_name="dancers")
+        pd.DataFrame(payments).to_excel(writer, sheet_name="payments")
         df_dict = dict()
         for date in df["date"].unique():
             for coach in df["coach_name"].unique():

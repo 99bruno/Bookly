@@ -17,7 +17,8 @@ async def command_start_handler(message: types.Message, state: FSMContext) -> No
 
         await state.clear()
         await message.answer(start_message_1)
-        await message.answer(start_message_2, reply_markup=start_keyboard)
+        await message.answer(start_message_2, reply_markup=start_keyboard,
+                             parse_mode='HTML')
 
     except Exception as e:
 
@@ -28,12 +29,11 @@ async def command_start_handler(message: types.Message, state: FSMContext) -> No
         sentry_sdk.capture_exception(e)
 
 
-@router.message(F.text == "Вернутись в головне меню")
+@router.message(F.text == "Повернутись в головне меню")
 async def command_back_to_main_menu_handler(message: types.Message, state: FSMContext) -> None:
     try:
 
         await state.clear()
-        await message.answer(start_message_1)
         await message.answer(start_message_2, reply_markup=start_keyboard)
 
     except Exception as e:
@@ -50,7 +50,6 @@ async def command_back_to_main_menu_callback_handler(query: types.CallbackQuery,
 
     try:
         await state.clear()
-        await query.message.answer(start_message_1)
         await query.message.answer(start_message_2, reply_markup=start_keyboard)
 
     except Exception as e:

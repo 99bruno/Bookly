@@ -12,5 +12,6 @@ class ListOfCoaches(StatesGroup):
     price = State()
     currency = State()
     dates = State()
+    lesson_restrictions = State()
 
     current_date = State()

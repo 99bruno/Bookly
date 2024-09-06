@@ -86,23 +86,13 @@ def create_keyboard_for_time(dates: list):
     if row:
         keyboard.append(row)
 
-    keyboard.append([InlineKeyboardButton(text="Забронювати", callback_data=f"book_lesson"),
-                    InlineKeyboardButton(text="Повернутись до дат", callback_data=f"return_to_dates")])
+    keyboard.append([InlineKeyboardButton(text="Обрати", callback_data=f"book_lesson"),
+                    InlineKeyboardButton(text="Назад 🔙", callback_data=f"return_to_dates")])
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
 
 confirm_book_lessons_keyboard = InlineKeyboardMarkup(
     inline_keyboard=[
-        [InlineKeyboardButton(text="Забронювати уроки", callback_data="lesson_booking_confirmation")],
-        [InlineKeyboardButton(text="Вернутись в головне меню", callback_data="back_to_main_menu")],
+        [InlineKeyboardButton(text="Підтвердити бронювання", callback_data="lesson_booking_confirmation")],
+        [InlineKeyboardButton(text="Повернутись в головне меню", callback_data="back_to_main_menu")],
              ])
-
-
-"""confirm_book_lessons_keyboard = ReplyKeyboardMarkup(
-    keyboard=[
-        [KeyboardButton(text="Забронювати уроки")],
-        [KeyboardButton(text="Вернутись в головне меню")],
-             ],
-    resize_keyboard=True,
-    input_field_placeholder="Choose"
-)"""

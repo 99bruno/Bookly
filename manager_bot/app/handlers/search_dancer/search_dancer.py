@@ -252,7 +252,9 @@ async def process_number_selection(callback_query: types.CallbackQuery,
                 await state.update_data(available_lessons_to_pay=available_lessons, lessons_to_pay=choose_lessons)
 
         if callback_query.data == 'confirm_payment_selected':
+            print("confirm_payment_selected")
             await mark_lessons_as_paid(choose_lessons)
+            await payment(choose_lessons, callback_query.from_user.username)
             await callback_query.answer(payment_confirmed_message, show_alert=True)
             await callback_query.message.answer(back_main_menu_message, reply_markup=start_keyboard)
             await state.clear()
@@ -306,12 +308,15 @@ async def confirm_payment(callback_query: types.CallbackQuery,
                           state: FSMContext) -> None:
 
     try:
+        print("confirm_payment")
 
         data = await state.get_data()
         lessons_to_pay = data.get("lessons_to_pay")
         couples = data.get("couples_info")
 
         await mark_lessons_as_paid(lessons_to_pay)
+
+        await payment(lessons_to_pay, callback_query.from_user.username)
 
         await callback_query.answer(payment_confirmed_message, show_alert=True)
 

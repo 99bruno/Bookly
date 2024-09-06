@@ -19,7 +19,8 @@ async def get_all_coaches() -> list:
                     "currency": coach.currency,
                     "dates": coach.dates,
                     "name": coach.firstname,
-                    "surname": coach.lastname
+                    "surname": coach.lastname,
+                    "lesson_restrictions": coach.lesson_restrictions
                 }
                 for coach in coaches
             ]
@@ -43,7 +44,6 @@ async def update_coach_info(coach_id: int, column: str, new_value) -> bool:
                 elif column == "lastname":
                     setattr(coach, column, new_value)
                     setattr(coach, "full_name", coach.firstname + " " + new_value)
-
 
                 setattr(coach, column, new_value)
                 await session.commit()

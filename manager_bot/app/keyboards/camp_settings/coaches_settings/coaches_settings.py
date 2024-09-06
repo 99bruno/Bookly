@@ -6,9 +6,6 @@ coaches_settings_kb = ReplyKeyboardMarkup(
                 KeyboardButton(text="Add new coach")
             ],
             [
-                KeyboardButton(text="Delete coach")
-            ],
-            [
                 KeyboardButton(text="View and edit coaches")
             ],
             [

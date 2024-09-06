@@ -33,10 +33,6 @@ class Dancer(Base):
     surname = Column(String(50), nullable=True)
     full_name = Column(String(101), nullable=True)
 
-    couple_id = Column(Integer, ForeignKey('couples.id'))
-
-    couples = relationship('Couple', foreign_keys=[couple_id])
-
 
 class Couple(Base):
     __tablename__ = 'couples'
@@ -95,6 +91,7 @@ class Coach(Base):
     currency: Mapped[str] = mapped_column(ForeignKey('currencies.id'))
     program: Mapped[bool] = mapped_column(BOOLEAN())  # True - Latin, False - Ballroom
     dates: Mapped[str] = mapped_column(String(500))
+    lesson_restrictions: Mapped[int] = mapped_column(Integer())
 
     event: Mapped["Event"] = relationship("Event", back_populates="coaches")
     lessons: Mapped[List["Lesson"]] = relationship("Lesson", back_populates="coach", cascade="all, delete-orphan")
@@ -139,6 +136,19 @@ class BookedLesson(Base):
     lesson: Mapped["Lesson"] = relationship("Lesson", back_populates="booked_lessons")
     coach: Mapped["Coach"] = relationship("Coach", back_populates="booked_lessons")
     couple: Mapped["Couple"] = relationship("Couple", back_populates="booked_lessons")
+
+
+class Payment(Base):
+    __tablename__ = "payments"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    time_of_payment: Mapped[datetime] = mapped_column(String(50))
+    manager_nickname: Mapped[str] = mapped_column(String(50))
+    couple_name: Mapped[str] = mapped_column(String(101))
+    coach_name: Mapped[str] = mapped_column(String(101))
+    lesson_date: Mapped[datetime] = mapped_column(DATETIME())
+    price: Mapped[int] = mapped_column(Integer())
+    currency: Mapped[str] = mapped_column(String())
 
 
 async def async_main():

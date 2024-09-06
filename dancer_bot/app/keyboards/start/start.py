@@ -13,7 +13,7 @@ start_keyboard = ReplyKeyboardMarkup(
 
 back_to_main_menu_keyboard = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text="Вернутись в головне меню")],
+        [KeyboardButton(text="Повернутись в головне меню")],
     ],
     resize_keyboard=True,
     input_field_placeholder="Choose"

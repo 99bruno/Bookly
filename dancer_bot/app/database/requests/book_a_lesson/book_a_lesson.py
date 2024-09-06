@@ -13,6 +13,7 @@ async def get_coaches_by_program(program_type: str):
         result = await session.execute(
             select(Coach).where(Coach.program == (program_type == "Latin"))
         )
+
         coaches = result.scalars().all()
 
         if not coaches:
@@ -46,18 +47,23 @@ async def get_available_dates_by_coach_and_date(coach_id: int, date: datetime.da
 
 
 async def get_lessons_by_coach(coach_id: int, couple_id: int):
+
     async with async_session() as session:
         # Get all available lessons for the coach
         result = await session.execute(
-            select(Lesson).where(Lesson.id_coach == coach_id, Lesson.available == True).order_by(Lesson.date)
+            select(Lesson, Coach.lesson_restrictions)
+            .join(Coach, Lesson.id_coach == Coach.id)
+            .where(Lesson.id_coach == coach_id, Lesson.available == True)
+            .order_by(Lesson.date)
         )
-        coach_lessons = result.scalars().all()
+        coach_lessons = result.fetchall()
 
         # Get all booked lessons for the dancer
         result = await session.execute(
             select(Lesson).join(BookedLesson, Lesson.id == BookedLesson.id_lesson)
-            .where(BookedLesson.id_couple == couple_id)
+            .where(BookedLesson.id_couple == int(couple_id))
         )
+
         booked_lessons = result.scalars().all()
 
         # Create a set of booked time ranges
@@ -65,15 +71,32 @@ async def get_lessons_by_coach(coach_id: int, couple_id: int):
             (lesson.date, lesson.start_time, lesson.end_time) for lesson in booked_lessons
         )
 
+        result = await session.execute(
+            select(Lesson).join(BookedLesson, Lesson.id == BookedLesson.id_lesson)
+            .where(BookedLesson.id_couple == int(couple_id), Lesson.id_coach == coach_id)
+        )
+
+        booked_restrictions = result.scalars().all()
+
         # Filter out coach lessons that overlap with booked lessons
         lessons_by_date = defaultdict(lambda: defaultdict(int))
-        for lesson in coach_lessons:
+        lesson_restrictions = None
+        for lesson, restrictions in coach_lessons:
             if (lesson.date, lesson.start_time, lesson.end_time) not in booked_times:
                 date_str = lesson.date.strftime("%Y-%m-%d")
                 time_range = f"{lesson.start_time.strftime('%H:%M')} - {lesson.end_time.strftime('%H:%M')}"
                 lessons_by_date[date_str][time_range] = lesson.id
+                lesson_restrictions = restrictions
 
-        return dict(lessons_by_date)
+
+        for lesson, restrictions in coach_lessons:
+            if (lesson.date, lesson.start_time, lesson.end_time) not in booked_times:
+                date_str = lesson.date.strftime("%Y-%m-%d")
+                time_range = f"{lesson.start_time.strftime('%H:%M')} - {lesson.end_time.strftime('%H:%M')}"
+                lessons_by_date[date_str][time_range] = lesson.id
+                lesson_restrictions = restrictions
+
+        return dict(lessons_by_date), lesson_restrictions, len(booked_lessons)
 
 
 async def get_lessons_info(lesson_ids: list):
@@ -136,3 +159,11 @@ async def book_lessons(lesson_ids: list, couple_id: int, coach_id: int) -> list:
 
         await session.commit()
         return unavailable_lessons
+
+
+async def get_lesson_by_id(lesson_id: int):
+    async with async_session() as session:
+        result = await session.execute(
+            select(Lesson).where(Lesson.id == lesson_id)
+        )
+        return result.scalar_one()

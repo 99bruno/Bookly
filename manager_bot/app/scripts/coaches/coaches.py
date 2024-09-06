@@ -12,18 +12,19 @@ def coach_unpack_info(coach_info, coach_info_message):
     return coach_info_message.format(f"• Full name: {coach_info['coach']}\n"
                                      f"• Program: {'Latin' if coach_info['program'] else 'Ballroom'}\n"
                                      f"• Price: {coach_info['price']} {currency[coach_info['currency'] - 1]}\n"
-                                     f"• Dates: {", ".join(ast.literal_eval(coach_info['dates']))}")
+                                     f"• Dates: {", ".join(ast.literal_eval(coach_info['dates']))}"
+                                     f"• Lesson restrictions: {coach_info['lesson_restrictions']}")
 
 
 def coach_unpack_info_for_edit(coach_info, coach_info_message):
     return coach_info_message.format(f"• Name: {coach_info['name']}\n• Surname: {coach_info['surname']}\n"
                                      f"• Program: {'Latin' if coach_info['program'] else 'Ballroom'}\n"
                                      f"• Price: {coach_info['price']} {currency[coach_info['currency'] - 1]}\n"
-                                     f"• Dates: {", ".join(ast.literal_eval(coach_info['dates']))}")
+                                     f"• Dates: {", ".join(ast.literal_eval(coach_info['dates']))}"
+                                     f"• Lesson restrictions: {coach_info['lesson_restrictions']}")
 
 
 def coach_view_schedule_unpack(lessons, template):
-    print(lessons)
 
     return template.format(lessons[0],
                            "\n".join(

@@ -52,7 +52,9 @@ coach_edit_keyboard = InlineKeyboardMarkup(
             InlineKeyboardButton(text="Edit price", callback_data="edit_coach_price"),
             InlineKeyboardButton(text="Edit currency", callback_data="edit_coach_currency")
         ],
-        [InlineKeyboardButton(text="Delete coach", callback_data="delete_coach")],
+        [
+            InlineKeyboardButton(text="Edit lesson restrictions", callback_data="lesson_restrictions")
+        ],
         [
             InlineKeyboardButton(text="Return 🔙", callback_data="return_to_coach"),
             InlineKeyboardButton(text="Back to menu 🏡", callback_data="back_to_main_menu")

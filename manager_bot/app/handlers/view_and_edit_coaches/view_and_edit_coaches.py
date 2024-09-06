@@ -170,9 +170,10 @@ async def callback_return_to_coaches_handler(callback_query: types.CallbackQuery
             await callback_query.message.edit_text("Choose the correct currency below 💸")
             await callback_query.message.edit_reply_markup(reply_markup=currency_keyboard)
 
-        elif callback_query.data == 'delete_coach':
-            await callback_query.answer("Oops, this function is not available right now 😦\n\n"
-                                        "Contact support if you need any help 🙏🏽", show_alert=True)
+        elif callback_query.data == 'lesson_restrictions':
+            await state.set_state(ListOfCoaches.lesson_restrictions)
+            await callback_query.message.answer(("Enter the maximum number of lessons that a pair can"
+                                                    "book for one coach"))
 
         elif callback_query.data == 'return_to_coach':
             coaches = await state.get_data()
@@ -365,6 +366,43 @@ async def edit_coach_currency_handler(callback_query: types.CallbackQuery,
         with sentry_sdk.configure_scope() as scope:
             scope.set_extra("user_id", callback_query.from_user.id)
             scope.set_extra("username", callback_query.from_user.username)
+
+        sentry_sdk.capture_exception(e)
+
+
+@router.message(ListOfCoaches.lesson_restrictions)
+async def edit_coach_price_handler(message: types.Message,
+                                   state: FSMContext) -> None:
+    try:
+
+        if not message.text.isdigit():
+            await message.answer("Please enter a valid number")
+            return
+
+        lesson_restrictions = message.text
+
+        coach_info = await state.get_data()
+
+        await update_coach_info(coach_info["coaches_info"][coach_info["current_coach"]]["id"], "lesson_restrictions",
+                                lesson_restrictions)
+
+        coach_info["coaches_info"][coach_info["current_coach"]]["lesson_restrictions"] = lesson_restrictions
+
+        await state.update_data(coaches_info=coach_info["coaches_info"])
+
+        await message.answer("Coach lesson restrictions has been updated")
+
+        await state.set_state(ListOfCoaches.edit)
+        await message.answer(coach_unpack_info(coach_info["coaches_info"][coach_info["current_coach"]],
+                                                              coach_info_message),
+                             reply_markup=coach_info_keyboard)
+
+
+    except Exception as e:
+
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", message.from_user.id)
+            scope.set_extra("username", message.from_user.username)
 
         sentry_sdk.capture_exception(e)
 

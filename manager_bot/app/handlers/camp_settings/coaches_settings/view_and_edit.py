@@ -35,7 +35,8 @@ async def command_coaches_list_handler(message: types.Message,
         await state.set_state(ListOfCoaches.coaches)
         await state.update_data(coaches_info=coaches_info)
 
-        await message.answer(coaches_unpack_info(coaches_info, coaches_list_message), reply_markup=coaches_list_keyboard(coaches_info))
+        await message.answer(coaches_unpack_info(coaches_info, coaches_list_message),
+                             reply_markup=coaches_list_keyboard(coaches_info))
 
     except Exception as e:
 
@@ -177,11 +178,12 @@ async def callback_return_to_coaches_handler(callback_query: types.CallbackQuery
             await callback_query.message.edit_text("Choose the correct currency below 💸")
             await callback_query.message.edit_reply_markup(reply_markup=currency_keyboard)
 
-        elif callback_query.data == 'delete_coach':
-            await callback_query.answer("Oops, this function is not available right now 😦\n\n"
-                                        "Contact support if you need any help 🙏🏽", show_alert=True)
-            #await state.set_state(ListOfCoaches.dates)
-            #await callback_query.message.answer("Enter new coach dates")
+        elif callback_query.data == 'lesson_restrictions':
+            await state.set_state(ListOfCoaches.lesson_restrictions)
+            await callback_query.answer("Oops", show_alert=True)
+            await callback_query.message.edit_text(("<b>Set Lesson Limit 🎯</b>\n"
+                                                   "Please specify the maximum number of "
+                                                    "lessons a dance pair can book with a coach:"))
 
         elif callback_query.data == 'return_to_coach':
             coaches = await state.get_data()
