@@ -172,8 +172,9 @@ async def callback_return_to_coaches_handler(callback_query: types.CallbackQuery
 
         elif callback_query.data == 'lesson_restrictions':
             await state.set_state(ListOfCoaches.lesson_restrictions)
-            await callback_query.message.answer(("Enter the maximum number of lessons that a pair can"
-                                                    "book for one coach"))
+            await callback_query.message.answer(("<b>Set Lesson Limit 🎯</b>\n\n"
+                                                 "Please specify the maximum number of "
+                                                 "lessons a dance pair can book with a coach:"))
 
         elif callback_query.data == 'return_to_coach':
             coaches = await state.get_data()
