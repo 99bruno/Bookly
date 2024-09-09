@@ -91,8 +91,8 @@ async def add_name_handler(message: types.Message,
 
         name = message.text
 
-        if len(name) > 50 or not re.compile(r"^[a-zA-Z\s'-]+$").match(name):
-            answer = await message.answer("The name is too long or contains invalid characters. Please try again.")
+        if len(name) > 50:
+            answer = await message.answer("The name is too long. Please try again.")
             latest_messages[message.from_user.id] = (answer.message_id, message.message_id)
             return
 

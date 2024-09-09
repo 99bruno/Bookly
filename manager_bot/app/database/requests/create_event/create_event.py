@@ -26,7 +26,6 @@ async def add_event_with_schedule(dates: list,
                                                  "breaks": json.dumps(breaks),
                                                  "full_schedule": json.dumps(full_schedule)},
                                                  session)
-        print(schedule)
 
         event_info = {"name": event_name,
                       "description": description,

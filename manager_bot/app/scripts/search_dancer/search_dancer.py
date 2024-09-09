@@ -59,6 +59,6 @@ async def sort_lessons(schedules: list) -> dict[str, Any]:
 
     for lesson_date, lessons in sorted(lessons_by_date.items()):
         for lesson in sorted(lessons, key=lambda x: x['lesson']['start_time']):
-            formated_output[f'{lesson_date.strftime("%d-%m")} {lesson["lesson"]["start_time"]}-{lesson["lesson"]["end_time"]}'] = int(lesson["booked_lesson_id"])
+            formated_output[f'{lesson_date.strftime("%d-%m")} {lesson["lesson"]["start_time"]} {lesson["coach"]["full_name"]}'] = int(lesson["booked_lesson_id"])
 
     return formated_output

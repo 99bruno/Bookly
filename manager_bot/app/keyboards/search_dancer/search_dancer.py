@@ -31,7 +31,7 @@ def create_keyboard_for_couples(couples: list) -> InlineKeyboardMarkup:
 def create_keyboard_for_lessons(lessons: list) -> InlineKeyboardMarkup:
     keyboard = []
     for lesson in lessons:
-        row = [InlineKeyboardButton(text=f"Lesson {lesson}", callback_data=f'lesson_{lesson}')]
+        row = [InlineKeyboardButton(text=f"{lesson}", callback_data=f'lesson_{lesson}')]
         keyboard.append(row)
 
     keyboard.append([
