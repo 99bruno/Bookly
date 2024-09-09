@@ -1,18 +1,1 @@
-var = {
-    'dancers_info': [{'id': 2, 'fullname': 'Anastasiia Lit', 'phone': '380979436650', 'tg_id': 'litkevichanastasia'}],
-    'current__dancer': 0,
-    'couples_info': [{'couple_id': 2, 'name': 'Anastasiia Lit & Pavlo Borys', 'dancer1_id': 2, 'dancer2_id': 1},
-                     {'couple_id': 3, 'name': 'Anastasiia Lit & Anastasiia Lit', 'dancer1_id': 2, 'dancer2_id': 2},
-                     {'couple_id': 5, 'name': 'Valeriia Podolchuk & Anastasiia Lit', 'dancer1_id': 3, 'dancer2_id': 2}],
-    'lessons': [{'booked_lesson_id': 6, 'paid': True,
-                 'lesson': {'id': 47, 'date': datetime.date(2024, 9, 13), 'start_time': '09:00', 'end_time': '10:00',
-                            'available': False, 'price': 25, 'currency': 1, 'program': 'Ballroom'},
-                 'coach': {'id': 2, 'full_name': 'Anna Will', 'price': 25, 'currency': 1, 'program': 'Ballroom'}},
-                {'booked_lesson_id': 7, 'paid': True,
-                 'lesson': {'id': 48, 'date': datetime.date(2024, 9, 13), 'start_time': '10:00', 'end_time': '11:00',
-                            'available': False, 'price': 25, 'currency': 1, 'program': 'Ballroom'},
-                 'coach': {'id': 2, 'full_name': 'Anna Will', 'price': 25, 'currency': 1, 'program': 'Ballroom'}},
-                {'booked_lesson_id': 16, 'paid': True,
-                 'lesson': {'id': 14, 'date': datetime.date(2024, 9, 13), 'start_time': '13:00', 'end_time': '14:00',
-                            'available': False, 'price': 19, 'currency': 1, 'program': 'Latin'},
-                 'coach': {'id': 1, 'full_name': 'Paul Boy', 'price': 19, 'currency': 4, 'program': 'Latin'}}]}
+
