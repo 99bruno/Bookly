@@ -246,7 +246,6 @@ async def cancel_booking_handler(query: types.CallbackQuery, state: FSMContext) 
                                                        await format_booked_lessons(data["lessons"])
                                                    ]))
 
-
         await query.message.edit_reply_markup(reply_markup=create_keyboard_for_reschedule_lesson(sorted_lessons :=
                                                                                                  await sort_lessons_test(
                                                                                                      data["lessons"])))
