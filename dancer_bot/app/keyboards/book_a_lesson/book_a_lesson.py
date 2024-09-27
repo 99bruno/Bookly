@@ -26,13 +26,11 @@ def create_keyboard_for_choose_couple(couples: list):
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
 
-choose_program_keyboard = ReplyKeyboardMarkup(
-    keyboard=[
-        [KeyboardButton(text="Latin")],
-        [KeyboardButton(text="Ballroom")],
+choose_program_keyboard = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [InlineKeyboardButton(text="Latin", callback_data="latin_book_lesson")],
+        [InlineKeyboardButton(text="Ballroom", callback_data="ballroom_book_lesson")],
              ],
-    resize_keyboard=True,
-    input_field_placeholder="Вибери"
 )
 
 

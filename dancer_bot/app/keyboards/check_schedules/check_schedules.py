@@ -87,7 +87,7 @@ confirm_lesson_cancel_keyboard = ReplyKeyboardMarkup(
             KeyboardButton(text="Скасувати урок")
         ],
         [
-            KeyboardButton(text="Вернутись в головне меню")
+            KeyboardButton(text="Повернутись в головне меню")
         ]
     ],
     resize_keyboard=True

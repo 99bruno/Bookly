@@ -21,6 +21,40 @@ from sentry_logging.sentry_setup import sentry_sdk
 router = Router()
 
 
+@router.callback_query(lambda c: c.data == 'book_lessons')
+async def command_book_a_lesson_handler(callback: types.CallbackQuery, state: FSMContext) -> None:
+
+    try:
+        await state.clear()
+
+        user_info = await check_user_registered(callback.from_user.id)
+        if user_info:
+            couple_info = await check_couple_registered(user_info)
+            if couple_info:
+
+                await state.set_state(LessonRegistration.couples)
+                await state.update_data(couples=couple_info)
+
+                couples = concatenate_couples(couple_info)
+
+                await callback.message.answer(format_string(choose_couple_message, ["\n".join(format_couple(couples))]),
+                                     reply_markup=create_keyboard_for_choose_couple(couples))
+            else:
+                await callback.message.answer(register_couple_message, reply_markup=change_partner_solo_or_couple_keyboard)
+        else:
+            await state.set_state(UserRegistration.phone_number)
+            await callback.message.answer(enter_phone_number_message, reply_markup=share_contact_keyboard)
+            await callback.message.answer_photo(photo=FSInputFile("app/database/Share_contact.jpeg"))
+
+    except Exception as e:
+
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", message.from_user.id)
+            scope.set_extra("username", message.from_user.username)
+
+        sentry_sdk.capture_exception(e)
+
+
 @router.message(F.text == "Забронювати уроки 📅")
 async def command_book_a_lesson_handler(message: types.Message, state: FSMContext) -> None:
 
@@ -44,6 +78,7 @@ async def command_book_a_lesson_handler(message: types.Message, state: FSMContex
         else:
             await state.set_state(UserRegistration.phone_number)
             await message.answer(enter_phone_number_message, reply_markup=share_contact_keyboard)
+            await message.answer_photo(photo=FSInputFile("app/database/Share_contact.jpeg"))
 
     except Exception as e:
 
@@ -92,24 +127,25 @@ async def handle_couple_selection(callback_query: types.CallbackQuery,
         sentry_sdk.capture_exception(e)
 
 
-@router.message(LessonRegistration.program)
-async def handle_program_selection(message: types.Message,
+@router.callback_query(lambda event: event.data == 'latin_book_lesson' or event.data == 'ballroom_book_lesson')
+async def handle_program_selection(callback: types.CallbackQuery,
                                    state: FSMContext) -> None:
     try:
-        program = message.text
+        program = callback.data.split('_')[0].title()
 
         await state.update_data(program=program)
         coaches = await get_coaches_by_program(program)
         await state.update_data(coaches=coaches)
         await state.set_state(LessonRegistration.coach_id)
 
-        await message.answer(available_dates_message, reply_markup=create_keyboard_for_coaches(coaches))
+        await callback.message.edit_text(available_dates_message)
+        await callback.message.edit_reply_markup(reply_markup=create_keyboard_for_coaches(coaches))
 
     except Exception as e:
 
         with sentry_sdk.configure_scope() as scope:
-            scope.set_extra("user_id", message.from_user.id)
-            scope.set_extra("username", message.from_user.username)
+            scope.set_extra("user_id", callback.from_user.id)
+            scope.set_extra("username", callback.from_user.username)
 
         sentry_sdk.capture_exception(e)
 

@@ -19,6 +19,7 @@ class Manager(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     tg_id: Mapped[int] = mapped_column(BigInteger)
     tg_username: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    chat_id: Mapped[int] = mapped_column(BigInteger)
 
     admin: Mapped[bool] = mapped_column(BOOLEAN())
 
@@ -32,6 +33,7 @@ class Dancer(Base):
     name = Column(String(50), nullable=True)
     surname = Column(String(50), nullable=True)
     full_name = Column(String(101), nullable=True)
+    chat_id = Column(BigInteger, nullable=True)
 
 
 class Couple(Base):
@@ -149,6 +151,19 @@ class Payment(Base):
     lesson_date: Mapped[datetime] = mapped_column(DATETIME())
     price: Mapped[int] = mapped_column(Integer())
     currency: Mapped[str] = mapped_column(String())
+
+
+class Change(Base):
+    __tablename__ = "changes"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    time_of_change: Mapped[datetime] = mapped_column(String(50))
+    dancer_username: Mapped[int] = mapped_column(String(50))
+    couple_name: Mapped[str] = mapped_column(String(50))
+    coach_name: Mapped[str] = mapped_column(String(101))
+    lesson_date: Mapped[datetime] = mapped_column(String())
+    lesson_id: Mapped[int] = mapped_column(ForeignKey('lessons.id'))
+    reason: Mapped[str] = mapped_column(String(500), nullable=True)
 
 
 async def async_main():
