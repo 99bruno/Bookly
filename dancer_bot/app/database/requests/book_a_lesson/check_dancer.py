@@ -13,12 +13,13 @@ async def check_user_registered(tg_id: int) -> int | bool:
             return False
 
 
-async def add_user(tg_id: int, tg_username: str, phone_number: int, name: str, surname: str, full_name: str) -> None:
+async def add_user(tg_id: int, tg_username: str, phone_number: int, name: str, surname: str, full_name: str,
+                   chat_id: int = 0) -> None:
     async with async_session() as session:
         try:
             if tg_id is not None:
                 dancer = Dancer(tg_id=tg_id, tg_username=tg_username, phone=phone_number, name=name, surname=surname,
-                                full_name=full_name)
+                                full_name=full_name, chat_id=chat_id)
             else:
                 dancer = Dancer(tg_username="TBA", phone=phone_number, name=name, surname=surname, full_name=full_name)
         except:

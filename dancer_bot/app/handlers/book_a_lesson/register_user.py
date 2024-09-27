@@ -90,7 +90,7 @@ async def command_book_a_lesson_handler(message: types.Message, state: FSMContex
 
         await add_user(message.from_user.id, "TBA" if not message.from_user.username else message.from_user.username,
                        data["phone_number"], data["name"],
-                           data["surname"], " ".join([data["name"], data["surname"]]))
+                           data["surname"], " ".join([data["name"], data["surname"]]), message.chat.id)
         dancer_id = await check_user_registered_by_phone(data["phone_number"])
         await is_couple_registered(dancer_id, state, message)
     except Exception as e:

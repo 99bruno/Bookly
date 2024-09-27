@@ -2,7 +2,7 @@ from aiogram import BaseMiddleware
 from aiogram.types import Update
 from typing import Callable, Any, Dict, Awaitable
 
-from app.database.requests.check_user import check_user
+from app.database.requests.check_user import check_user, check_user_have_chat_id_registered
 
 
 class AccessControlMiddleware(BaseMiddleware):
@@ -13,8 +13,9 @@ class AccessControlMiddleware(BaseMiddleware):
         data: Dict[str, Any]
     ) -> Any:
         user_id = event.from_user.id
-        if await check_user(user_id):
 
+        if await check_user(user_id):
+            await check_user_have_chat_id_registered(user_id, data["event_context"].chat.id)
             return await handler(event, data)
         else:
 

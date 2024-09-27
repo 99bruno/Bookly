@@ -3,10 +3,10 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardBut
 check_camp_info_keyboard = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="Переглянути список тренерів")
+            KeyboardButton(text="Тренери та ціни")
         ],
         [
-            KeyboardButton(text="Вернутись в головне меню")
+            KeyboardButton(text="Повернутись в головне меню")
         ],
              ],
     resize_keyboard=True,
@@ -32,6 +32,10 @@ coaches_program_choose_keyboard = InlineKeyboardMarkup(
 
 def create_keyboard_for_coaches_camp_info(coaches: list):
     keyboard = []
+    keyboard.append([
+        InlineKeyboardButton(text="Ціни уроків", callback_data="compare_prices"),
+        InlineKeyboardButton(text="Забронювати уроки", callback_data="book_lessons"),
+    ])
 
     for i in range(0, len(coaches), 2):
         row = [InlineKeyboardButton(text=f"Тренер {i+1}", callback_data=f'camp_info_coach_{coaches[i]["id"]}')]
@@ -63,7 +67,7 @@ coach_info_keyboard = InlineKeyboardMarkup(
 coach_view_price_keyboard = InlineKeyboardMarkup(
     inline_keyboard=[
         [
-            InlineKeyboardButton(text="Ціни всіх викладачів 💸", callback_data="compare_prices")
+            InlineKeyboardButton(text="Ціни уроків", callback_data="compare_prices")
         ],
         [
             InlineKeyboardButton(text="В головне меню 🏡", callback_data="back_to_main_menu")

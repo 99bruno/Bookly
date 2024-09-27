@@ -1,5 +1,7 @@
-from sqlalchemy import select, delete, update
-from app.database.models import async_session, Lesson, BookedLesson, Coach, Couple
+import datetime
+
+from sqlalchemy import select, delete, update, insert
+from app.database.models import async_session, Lesson, BookedLesson, Coach, Couple, Change
 
 
 async def check_couple_exists(dancer1_id: int, dancer2_id: int) -> bool:
@@ -37,7 +39,7 @@ async def get_booked_lessons_by_couple(couple_id: int) -> list:
         return lessons_info
 
 
-async def cancel_booked_lesson(booked_lesson_id: int) -> None:
+async def cancel_booked_lesson(booked_lesson_id: int, data: dict, username: str) -> None:
     async with async_session() as session:
         async with session.begin():
 
@@ -57,6 +59,16 @@ async def cancel_booked_lesson(booked_lesson_id: int) -> None:
                 .where(Lesson.id == lesson_id)
                 .values(available=True)
             )
+
+            await session.execute(insert(Change).values(
+                time_of_change=datetime.datetime.now().strftime("%D-%m-%Y %H:%M"),
+                dancer_username=username,
+                couple_name=data["couples"][int(data["couple_id"])]["dancer1_full_name"]+" & "+data["couples"][int(data["couple_id"])]["dancer2_full_name"],
+                coach_name=data["lessons"][0]["coach"],
+                lesson_date=data["lesson_date"],
+                lesson_id=lesson_id,
+                reason=data["reason"]
+                    ))
 
             await session.commit()
 

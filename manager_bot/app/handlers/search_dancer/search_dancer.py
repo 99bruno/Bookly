@@ -218,6 +218,7 @@ async def pay_all(callback_query: types.CallbackQuery,
         await state.set_state(Dancers.select_lessons)
 
         available_lessons_to_pay = await sort_lessons(lessons)
+        print(available_lessons_to_pay)
 
         await state.update_data(available_lessons_to_pay=available_lessons_to_pay)
 

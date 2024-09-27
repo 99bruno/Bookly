@@ -64,8 +64,7 @@ async def command_check_camp_info_handler(query: types.CallbackQuery) -> None:
         sentry_sdk.capture_exception(e)
 
 
-
-@router.message(F.text == "Переглянути список тренерів")
+@router.message(F.text == "Тренери та ціни")
 async def command_coaches_list_handler(message: types.Message) -> None:
     try:
 
@@ -78,7 +77,6 @@ async def command_coaches_list_handler(message: types.Message) -> None:
             scope.set_extra("username", message.from_user.username)
 
         sentry_sdk.capture_exception(e)
-
 
 
 @router.callback_query(lambda query: query.data.startswith("coaches_program_choose"))
@@ -101,7 +99,6 @@ async def command_coaches_list_handler(query: types.CallbackQuery,
         sentry_sdk.capture_exception(e)
 
 
-
 @router.callback_query(lambda query: query.data == "return_to_program_choose")
 async def command_coaches_list_handler(query: types.CallbackQuery) -> None:
     try:
@@ -115,7 +112,6 @@ async def command_coaches_list_handler(query: types.CallbackQuery) -> None:
             scope.set_extra("username", query.from_user.username)
 
         sentry_sdk.capture_exception(e)
-
 
 
 @router.callback_query(lambda query: query.data == "return_to_coaches_list")
@@ -136,7 +132,6 @@ async def command_coaches_list_handler(query: types.CallbackQuery,
             scope.set_extra("username", query.from_user.username)
 
         sentry_sdk.capture_exception(e)
-
 
 
 @router.callback_query(lambda query: query.data.startswith("camp_info_coach"))
@@ -196,7 +191,8 @@ async def coach_from_camp_info_handler(query: types.CallbackQuery,
                                                                                     data.get("program")
                                                                                     ))
 
-        await query.message.edit_reply_markup(reply_markup=coach_compare_price_keyboard)
+        await query.message.edit_reply_markup(reply_markup=create_keyboard_for_coaches_camp_info(coaches))
+
     except Exception as e:
 
         with sentry_sdk.configure_scope() as scope:

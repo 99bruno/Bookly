@@ -1,6 +1,7 @@
 from aiogram import types, html, F, Router
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
+from aiogram.types import FSInputFile
 import datetime
 
 
@@ -57,6 +58,8 @@ async def command_book_a_lesson_handler(message: types.Message, state: FSMContex
         else:
             await state.set_state(UserRegistration.phone_number)
             await message.answer(enter_phone_number_message, reply_markup=share_contact_keyboard)
+            await message.answer_photo(photo=FSInputFile("app/database/Share_contact.jpeg"))
+
 
     except Exception as e:
 
@@ -203,7 +206,8 @@ async def cancel_booking_handler(message: types.Message, state: FSMContext) -> N
     try:
         data = await state.get_data()
 
-        await cancel_booked_lesson(data["lesson_id"])
+        await cancel_booked_lesson(data["lesson_id"], data, message.from_user.username)
+
         await message.answer(cancel_lesson_message, reply_markup=start_keyboard)
         await state.clear()
     except Exception as e:
