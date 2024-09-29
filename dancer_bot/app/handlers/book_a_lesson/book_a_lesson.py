@@ -160,6 +160,8 @@ async def handle_coach_selection(callback_query: types.CallbackQuery,
         dates, lesson_restrictions, booked_lessons_count = await get_lessons_by_coach(coach_id,
                                                                                       data["couples"][int(data["couple_id"])]["couple_id"])
 
+        #print(f"dates: {dates}\nlesson_restrictions: {lesson_restrictions}\nbooked_lessons_count: {booked_lessons_count}")
+
         await state.update_data(coach_id=coach_id)
         await state.update_data(all_dates=dates)
         await state.update_data(available_dates=list(dates.keys()))

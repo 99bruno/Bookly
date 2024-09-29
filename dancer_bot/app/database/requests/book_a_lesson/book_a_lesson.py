@@ -76,7 +76,7 @@ async def get_lessons_by_coach(coach_id: int, couple_id: int):
             .where(BookedLesson.id_couple == int(couple_id), Lesson.id_coach == coach_id)
         )
 
-        booked_restrictions = result.scalars().all()
+        booked_restrictions = len(result.scalars().all())
 
         # Filter out coach lessons that overlap with booked lessons
         lessons_by_date = defaultdict(lambda: defaultdict(int))
@@ -88,7 +88,6 @@ async def get_lessons_by_coach(coach_id: int, couple_id: int):
                 lessons_by_date[date_str][time_range] = lesson.id
                 lesson_restrictions = restrictions
 
-
         for lesson, restrictions in coach_lessons:
             if (lesson.date, lesson.start_time, lesson.end_time) not in booked_times:
                 date_str = lesson.date.strftime("%Y-%m-%d")
@@ -96,7 +95,7 @@ async def get_lessons_by_coach(coach_id: int, couple_id: int):
                 lessons_by_date[date_str][time_range] = lesson.id
                 lesson_restrictions = restrictions
 
-        return dict(lessons_by_date), lesson_restrictions, len(booked_lessons)
+        return dict(lessons_by_date), lesson_restrictions, booked_restrictions
 
 
 async def get_lessons_info(lesson_ids: list):
