@@ -1,5 +1,7 @@
 /.venv
+/.idea
 /dancer_bot/.env
 /manager_bot/.env
 /manager_bot/app/database/db.sqlite3
 /manager_bot/schedule.xlsx
+**/__pycache__/
