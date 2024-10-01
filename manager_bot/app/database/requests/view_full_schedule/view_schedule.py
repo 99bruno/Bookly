@@ -3,6 +3,8 @@ from sqlalchemy.orm import aliased
 import pandas as pd
 import numpy as np
 import ast
+from datetime import datetime, timedelta
+
 from app.database.models import async_session, Lesson, BookedLesson, Couple, Dancer, Coach, ScheduleEvent, Payment, Change
 
 async def fetch_lessons_with_full_info():
@@ -60,6 +62,12 @@ async def fetch_lessons_with_full_info():
 
         changes = result.fetchall()
 
+        result = await session.execute(select(Coach.id, Coach.full_name, Coach.dates))
+
+        coaches = result.fetchall()
+
+    coaches = pd.DataFrame(coaches)
+
     # Convert to Pandas DataFrame
     df = pd.DataFrame(lessons, columns=[
         'id', 'id_coach', 'available', 'date', 'start_time', 'end_time', 'price', 'currency', 'program',
@@ -78,11 +86,14 @@ async def fetch_lessons_with_full_info():
 
         df_dict = dict()
         for date in df["date"].unique():
+
             for coach in df["coach_name"].unique():
-                df_test = df[(df["date"] == date) & (df["coach_name"] == coach)][["available", 'dancer1_name', 'dancer2_name', 'paid']]
-                df_test["couple"] = df_test["dancer1_name"] + " & " + df_test["dancer2_name"]
-                df_dict[coach] = dates_np if not len(df_test["couple"].values) else df_test["couple"].values
-                df_dict[f"{coach.split()[0]} Payment Status"] = dates_np if not len(df_test["paid"].values) else [
-                    "✅"if paid is True else "❌" for paid in df_test["paid"].values]
+                if date.strftime('%d.%m.%Y') in ast.literal_eval(list(coaches[coaches["full_name"] == coach]["dates"])[0]):
+                    df_test = df[(df["date"] == date) & (df["coach_name"] == coach)][["available", 'dancer1_name', 'dancer2_name', 'paid']]
+                    df_test["couple"] = df_test["dancer1_name"] + " & " + df_test["dancer2_name"]
+                    df_dict[coach] = dates_np if not len(df_test["couple"].values) else df_test["couple"].values
+                    df_dict[f"{coach.split()[0]} Payment Status"] = dates_np if not len(df_test["paid"].values) else [
+                        "✅"if paid is True else "❌" for paid in df_test["paid"].values]
+
 
             pd.DataFrame(df_dict, index=indexes).to_excel(writer, sheet_name=date.strftime('%d-%m-%Y'))
