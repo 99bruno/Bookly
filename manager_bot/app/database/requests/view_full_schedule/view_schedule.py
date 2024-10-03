@@ -101,7 +101,9 @@ async def fetch_lessons_with_full_info():
             try:
                 print(len(df_dict))
                 print([d for idx, d in enumerate(df_dict) if idx in [12, 13]])
-                pd.DataFrame(df_dict, index=(indexes_1 if date in dates_error else indexes_2)).to_excel(writer,
+                print(df_dict["Zia James"])
+                print(df_dict["Zia James Payment Status"])
+                pd.DataFrame(df_dict, index=(indexes_1 if date.strftime('%Y-%m-%d') in dates_error else indexes_2)).to_excel(writer,
                                                                                    sheet_name=date.strftime('%d-%m-%Y'))
             except Exception as e:
                 print(e)
