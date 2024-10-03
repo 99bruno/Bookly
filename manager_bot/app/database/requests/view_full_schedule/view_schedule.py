@@ -94,8 +94,8 @@ async def fetch_lessons_with_full_info():
             for coach in df["coach_name"].unique():
                 if date.strftime('%d.%m.%Y') in ast.literal_eval(list(coaches[coaches["full_name"] == coach]["dates"])[0]):
                     df_test = df[(df["date"] == date) & (df["coach_name"] == coach)][["available", 'dancer1_name', 'dancer2_name', 'paid']]
-                    """if coach == "Zia James":
-                        print(df_test)"""
+                    if coach == "Mariia Yur":
+                        print(df_test)
                     df_test["couple"] = df_test["dancer1_name"] + " & " + df_test["dancer2_name"]
                     df_dict[coach] = dates_np if not len(df_test["couple"].values) else df_test["couple"].values
                     df_dict[f"{coach.split()[0]} Payment Status"] = ["✅"if paid is True else "❌" for paid in df_test["paid"].values]
