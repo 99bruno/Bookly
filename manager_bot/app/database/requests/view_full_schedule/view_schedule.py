@@ -97,7 +97,7 @@ async def fetch_lessons_with_full_info():
                     df_test["couple"] = df_test["dancer1_name"] + " & " + df_test["dancer2_name"]
                     df_dict[coach] = dates_np if not len(df_test["couple"].values) else df_test["couple"].values
                     df_dict[f"{coach.split()[0]} Payment Status"] = ["✅"if paid is True else "❌" for paid in df_test["paid"].values]
-                    print([[idx, df_test[idx]] for idx in df_test if len(df_test[idx]) == 24])
+                    print(df_test["paid"].values)
             try:
 
                 pd.DataFrame(df_dict, index=(indexes_1 if date.strftime('%Y-%m-%d') in
