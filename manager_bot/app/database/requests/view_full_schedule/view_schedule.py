@@ -43,7 +43,8 @@ async def fetch_lessons_with_full_info():
         schedule = await session.execute(select(ScheduleEvent.full_schedule).where(ScheduleEvent.id == 1))
         schedule = schedule.scalar_one_or_none()
 
-        indexes = ast.literal_eval(schedule)
+        indexes_1 = ast.literal_eval(schedule)
+        indexes_2 = ["07:45-08:30", "08:30-09:15", "09:15-10:00", "10:00-10:45", "11:00-11:45", "11:45-12:30", "12:30-13:15", "13:30-14:15", "14:15-15:00", "15:00-15:45", "16:00-16:45", "16:45-17:30"]
 
         dancers = await session.execute(select(Dancer.full_name, Dancer.tg_username, Dancer.phone))
         dancers = dancers.fetchall()
@@ -79,6 +80,8 @@ async def fetch_lessons_with_full_info():
     dates_np = np.empty(dates)
     dates_np[:] = np.nan
 
+    dates_error = ['02-12-2024', '03-12-2024']
+
     with pd.ExcelWriter('app/database/schedule.xlsx') as writer:
         pd.DataFrame(dancers).to_excel(writer, sheet_name="dancers")
         pd.DataFrame(payments).to_excel(writer, sheet_name="payments")
@@ -86,6 +89,7 @@ async def fetch_lessons_with_full_info():
 
         df_dict = dict()
         for date in df["date"].unique():
+            print(date)
 
             for coach in df["coach_name"].unique():
                 if date.strftime('%d.%m.%Y') in ast.literal_eval(list(coaches[coaches["full_name"] == coach]["dates"])[0]):
@@ -95,5 +99,5 @@ async def fetch_lessons_with_full_info():
                     df_dict[f"{coach.split()[0]} Payment Status"] = dates_np if not len(df_test["paid"].values) else [
                         "✅"if paid is True else "❌" for paid in df_test["paid"].values]
 
-
-            pd.DataFrame(df_dict, index=indexes).to_excel(writer, sheet_name=date.strftime('%d-%m-%Y'))
+            pd.DataFrame(df_dict, index=(indexes_1 if not date in dates_error else indexes_2)).to_excel(writer,
+                                                                                   sheet_name=date.strftime('%d-%m-%Y'))
