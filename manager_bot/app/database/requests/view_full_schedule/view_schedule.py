@@ -89,7 +89,6 @@ async def fetch_lessons_with_full_info():
 
         df_dict = dict()
         for date in df["date"].unique():
-            print(date)
 
             for coach in df["coach_name"].unique():
                 if date.strftime('%d.%m.%Y') in ast.literal_eval(list(coaches[coaches["full_name"] == coach]["dates"])[0]):
@@ -99,5 +98,5 @@ async def fetch_lessons_with_full_info():
                     df_dict[f"{coach.split()[0]} Payment Status"] = dates_np if not len(df_test["paid"].values) else [
                         "✅"if paid is True else "❌" for paid in df_test["paid"].values]
 
-            pd.DataFrame(df_dict, index=(indexes_1 if not date in dates_error else indexes_2)).to_excel(writer,
+            pd.DataFrame(df_dict, index=(indexes_1 if date not in dates_error else indexes_2)).to_excel(writer,
                                                                                    sheet_name=date.strftime('%d-%m-%Y'))
