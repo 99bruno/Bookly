@@ -106,4 +106,4 @@ async def fetch_lessons_with_full_info():
                                                           dates_error else indexes_2)).to_excel(writer,
                                                                                                 sheet_name=date.strftime('%d-%m-%Y'))
             except Exception as e:
-                print(e)
+                print(f"Error - {e}")
