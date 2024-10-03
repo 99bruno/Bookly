@@ -99,7 +99,7 @@ async def fetch_lessons_with_full_info():
                     df_dict[f"{coach.split()[0]} Payment Status"] = dates_np if not len(df_test["paid"].values) else [
                         "✅"if paid is True else "❌" for paid in df_test["paid"].values]
             try:
-                pd.DataFrame(df_dict, index=(indexes_1 if date not in dates_error else indexes_2)).to_excel(writer,
+                pd.DataFrame(df_dict, index=(indexes_1 if date in dates_error else indexes_2)).to_excel(writer,
                                                                                    sheet_name=date.strftime('%d-%m-%Y'))
             except Exception as e:
                 print(e)
