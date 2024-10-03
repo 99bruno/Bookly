@@ -100,7 +100,7 @@ async def fetch_lessons_with_full_info():
                         "✅"if paid is True else "❌" for paid in df_test["paid"].values]
             try:
                 print(len(df_dict))
-                print(len(d) for d in df_dict.values())
+                print([len(d) for d in df_dict.values()])
                 pd.DataFrame(df_dict, index=(indexes_1 if date in dates_error else indexes_2)).to_excel(writer,
                                                                                    sheet_name=date.strftime('%d-%m-%Y'))
             except Exception as e:
