@@ -97,7 +97,9 @@ async def fetch_lessons_with_full_info():
                     df_test["couple"] = df_test["dancer1_name"] + " & " + df_test["dancer2_name"]
                     df_dict[coach] = dates_np if not len(df_test["couple"].values) else df_test["couple"].values
                     df_dict[f"{coach.split()[0]} Payment Status"] = ["✅"if paid is True else "❌" for paid in df_test["paid"].values]
+                    print([[idx, d] for idx, d in df_test.iterrows() if len(d) > 12])
             try:
+
                 pd.DataFrame(df_dict, index=(indexes_1 if date.strftime('%Y-%m-%d') in
                                                           dates_error else indexes_2)).to_excel(writer,
                                                                                                 sheet_name=date.strftime('%d-%m-%Y'))
