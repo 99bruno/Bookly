@@ -80,7 +80,7 @@ async def fetch_lessons_with_full_info():
     dates_np = np.empty(dates)
     dates_np[:] = np.nan
 
-    dates_error = ['02-12-2024', '03-12-2024']
+    dates_error = ['2024-12-02', '2024-12-03']
 
     with pd.ExcelWriter('app/database/schedule.xlsx') as writer:
         pd.DataFrame(dancers).to_excel(writer, sheet_name="dancers")
@@ -100,7 +100,7 @@ async def fetch_lessons_with_full_info():
                         "✅"if paid is True else "❌" for paid in df_test["paid"].values]
             try:
                 print(len(df_dict))
-                print([len(d) for d in df_dict.values()])
+                print([d for idx, d in enumerate(df_dict) if idx in [12, 13]])
                 pd.DataFrame(df_dict, index=(indexes_1 if date in dates_error else indexes_2)).to_excel(writer,
                                                                                    sheet_name=date.strftime('%d-%m-%Y'))
             except Exception as e:
