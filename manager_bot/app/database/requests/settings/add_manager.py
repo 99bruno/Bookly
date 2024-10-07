@@ -34,7 +34,6 @@ async def remove_manager(idx: int):
     async with async_session() as session:
         async with session.begin():
             manager = await session.get(Manager, idx)
-            print(manager)
             if manager:
                 await session.delete(manager)
                 await session.commit()

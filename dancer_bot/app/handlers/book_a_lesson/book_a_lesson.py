@@ -106,6 +106,7 @@ async def handle_change_couple(callback_query: types.CallbackQuery) -> None:
 @router.callback_query(lambda event: event.data.startswith('couple_'))
 async def handle_couple_selection(callback_query: types.CallbackQuery,
                                   state: FSMContext) -> None:
+
     try:
         couple_id = callback_query.data.split('_')[-1]
 
@@ -138,8 +139,10 @@ async def handle_program_selection(callback: types.CallbackQuery,
         await state.update_data(coaches=coaches)
         await state.set_state(LessonRegistration.coach_id)
 
+        data = await state.get_data()
+
         await callback.message.edit_text(available_dates_message)
-        await callback.message.edit_reply_markup(reply_markup=create_keyboard_for_coaches(coaches))
+        await callback.message.edit_reply_markup(reply_markup=create_keyboard_for_coaches(coaches, data["couple_id"]))
 
     except Exception as e:
 
@@ -160,7 +163,17 @@ async def handle_coach_selection(callback_query: types.CallbackQuery,
         dates, lesson_restrictions, booked_lessons_count = await get_lessons_by_coach(coach_id,
                                                                                       data["couples"][int(data["couple_id"])]["couple_id"])
 
+        for date in dates:
+            if not bool(dates[date]):
+                dates.pop(date)
+
+        if not bool(dates):
+            await callback_query.answer("На жаль, у цього тренера немає вільних дат для занять.",
+                                        show_alert=True)
+            return
+
         #print(f"dates: {dates}\nlesson_restrictions: {lesson_restrictions}\nbooked_lessons_count: {booked_lessons_count}")
+
 
         await state.update_data(coach_id=coach_id)
         await state.update_data(all_dates=dates)
@@ -182,8 +195,6 @@ async def handle_coach_selection(callback_query: types.CallbackQuery,
         sentry_sdk.capture_exception(e)
 
 
-
-@router.callback_query(LessonRegistration.selected_dates)
 async def process_number_selection(callback_query: types.CallbackQuery,
                                    state: FSMContext):
     try:
