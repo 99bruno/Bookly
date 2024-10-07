@@ -172,9 +172,6 @@ async def handle_coach_selection(callback_query: types.CallbackQuery,
                                         show_alert=True)
             return
 
-        #print(f"dates: {dates}\nlesson_restrictions: {lesson_restrictions}\nbooked_lessons_count: {booked_lessons_count}")
-
-
         await state.update_data(coach_id=coach_id)
         await state.update_data(all_dates=dates)
         await state.update_data(available_dates=list(dates.keys()))
@@ -195,10 +192,13 @@ async def handle_coach_selection(callback_query: types.CallbackQuery,
         sentry_sdk.capture_exception(e)
 
 
+@router.callback_query(LessonRegistration.selected_dates)
 async def process_number_selection(callback_query: types.CallbackQuery,
                                    state: FSMContext):
     try:
         data = await state.get_data()
+
+        print(data)
 
         choose_dates = data.get('choose_dates', [])
         all_dates = data.get('all_dates', [])
