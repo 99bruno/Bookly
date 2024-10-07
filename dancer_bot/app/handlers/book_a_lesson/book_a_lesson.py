@@ -171,7 +171,7 @@ async def handle_coach_selection(callback_query: types.CallbackQuery,
             await callback_query.answer("На жаль, наразі в цього тренера нема вільних годин для занять :(",
                                         show_alert=True)
             return
-git
+
         await state.update_data(coach_id=coach_id)
         await state.update_data(all_dates=dates)
         await state.update_data(available_dates=list(dates.keys()))
