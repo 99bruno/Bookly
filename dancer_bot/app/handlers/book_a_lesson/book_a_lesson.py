@@ -168,7 +168,7 @@ async def handle_coach_selection(callback_query: types.CallbackQuery,
                 dates.pop(date)
 
         if not bool(dates):
-            await callback_query.answer("На жаль, у цього тренера немає вільних дат для занять.",
+            await callback_query.answer("На жаль, наразі в цього тренера нема вільних годин для занять :(",
                                         show_alert=True)
             return
 
