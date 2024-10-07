@@ -48,7 +48,6 @@ async def dancers_search(message: types.Message,
         dancer_info = message.text
 
         phone = "".join(message.text.split())[1:] if message.text.startswith("+") else "".join(message.text.split())
-        print(phone)
 
         if phone.isdigit() and len(phone) == 12:
             search_type = "phone"
@@ -218,7 +217,6 @@ async def pay_all(callback_query: types.CallbackQuery,
         await state.set_state(Dancers.select_lessons)
 
         available_lessons_to_pay = await sort_lessons(lessons)
-        print(available_lessons_to_pay)
 
         await state.update_data(available_lessons_to_pay=available_lessons_to_pay)
 

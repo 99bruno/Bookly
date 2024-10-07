@@ -466,7 +466,6 @@ async def add_description_handler(message: types.Message,
         await state.update_data(description=description)
 
         data = await state.get_data()
-        print(data.get('dates'))
 
         await add_event_with_schedule(data.get('dates'),
                                       data.get('name'),

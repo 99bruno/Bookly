@@ -44,7 +44,7 @@ change_partner_solo_or_couple_keyboard = ReplyKeyboardMarkup(
 )
 
 
-def create_keyboard_for_coaches(coaches: list):
+def create_keyboard_for_coaches(coaches: list, couple_id: int):
     keyboard = []
     for coach in coaches:
         button = InlineKeyboardButton(
@@ -52,6 +52,8 @@ def create_keyboard_for_coaches(coaches: list):
             callback_data=f"coach_{coach['coach_id']}"
         )
         keyboard.append([button])
+
+    keyboard.append([InlineKeyboardButton(text="Назад 🔙", callback_data=f"couple_{couple_id}")])
 
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 

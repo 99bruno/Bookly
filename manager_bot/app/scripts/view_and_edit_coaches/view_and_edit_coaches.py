@@ -24,7 +24,6 @@ def coach_unpack_info_for_edit(coach_info, coach_info_message):
 
 
 def coach_view_schedule_unpack(lessons, template):
-    print(lessons)
 
     return template.format(lessons[0],
                            "\n".join(

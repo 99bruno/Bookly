@@ -44,7 +44,6 @@ async def dancers_search(message: types.Message,
     dancer_info = message.text
 
     phone = "".join(message.text.split())[1:] if message.text.startswith("+") else "".join(message.text.split())
-    print(phone)
 
     if phone.isdigit() and len(phone) == 12:
         search_type = "phone"

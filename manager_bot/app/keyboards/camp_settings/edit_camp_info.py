@@ -31,7 +31,6 @@ async def command_edit_camp_info_handler(message: types.Message,
 
     await delete_previous_messages_bot(bot, message.chat.id, message.from_user.id, latest_messages)
 
-    print(get_event_info())
     answer = await message.answer(
         await edit_event_message_unpack(await get_event_info(), edit_event_message),
         reply_markup=edit_event_keyboard)
