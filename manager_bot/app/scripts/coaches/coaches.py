@@ -1,6 +1,6 @@
 import ast
 
-currency = ['EUR', 'USD', 'UAH', 'GBP']
+currency = ['USD', 'EUR', 'UAH', 'GBP']
 
 
 def coaches_unpack_info(coaches_info, coaches_list_message):
