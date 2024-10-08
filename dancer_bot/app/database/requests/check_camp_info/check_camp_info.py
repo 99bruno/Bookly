@@ -1,7 +1,7 @@
 from sqlalchemy import select, delete, update
 from app.database.models import async_session, Coach, Dancer
 
-currency = ["USD", "EUR", "UAH", "GBP"]
+currency = ["EUR", "USD", "UAH", "GBP"]
 
 
 async def check_user_registered(tg_id):

@@ -16,7 +16,7 @@ async def get_all_coaches() -> list:
                     "coach": coach.full_name,
                     "program": coach.program,
                     "price": coach.price,
-                    "currency": coach.currency-1,
+                    "currency": coach.currency,
                     "dates": coach.dates,
                     "name": coach.firstname,
                     "surname": coach.lastname,
