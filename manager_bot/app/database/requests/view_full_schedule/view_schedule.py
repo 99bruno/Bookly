@@ -121,9 +121,6 @@ async def fetch_lessons_with_full_info():
                         df_dict[coach] = dates_np_12 if not len(df_test["couple"].values) else df_test["couple"].values
                         df_dict[f"{coach.split()[0]} Payment Status"] = ["✅"if paid is True else "❌" for paid in df_test["paid"].values]
 
-                    if date.strftime('%Y-%m-%d') == '2024-12-07':
-                        print(f"{'---'*10}\nCoach - {coach}\n Len of coach lessons - {len(df_dict[coach])}\n Len of payment status - {len(df_dict[f'{coach.split()[0]} Payment Status'])}\n")
-
             try:
                 if date.strftime('%Y-%m-%d') == '2024-12-06':
                     pd.DataFrame(df_dict, index=indexes_3).to_excel(writer, sheet_name=date.strftime('%d-%m-%Y'))
