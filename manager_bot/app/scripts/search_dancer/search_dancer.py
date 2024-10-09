@@ -35,6 +35,7 @@ async def format_booked_lessons(booked_lessons: list) -> str:
             start_time = lesson['lesson']['start_time']
             end_time = lesson['lesson']['end_time']
             paid_status = "✅" if lesson['paid'] else "❌"
+            print(lesson['paid'])
             price = lesson['lesson']['price']
             currency_ = currency[lesson['lesson']['currency']-1]
             program = lesson['lesson']['program']
