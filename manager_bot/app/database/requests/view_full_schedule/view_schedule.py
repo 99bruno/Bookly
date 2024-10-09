@@ -45,6 +45,7 @@ async def fetch_lessons_with_full_info():
 
         indexes_1 = ast.literal_eval(schedule)
         indexes_2 = ["07:45-08:30", "08:30-09:15", "09:15-10:00", "10:00-10:45", "11:00-11:45", "11:45-12:30", "12:30-13:15", "13:30-14:15", "14:15-15:00", "15:00-15:45", "16:00-16:45", "16:45-17:30"]
+        indexes_3 = ["07:45-08:30", "08:30-09:15", "09:15-10:00", "10:00-10:45", "10:45-11:30", "11:30-12:15", "12:15-13:00", "13:00-13:45", ]
 
         dancers = await session.execute(select(Dancer.full_name, Dancer.tg_username, Dancer.phone))
         dancers = dancers.fetchall()
@@ -76,9 +77,17 @@ async def fetch_lessons_with_full_info():
     ])
 
     dates = df[(df["date"] == df["date"].unique()[0]) & (df["coach_name"] == df["coach_name"].unique()[0])].shape[0]
+    print("dates", dates)
 
-    dates_np = np.empty(dates)
-    dates_np[:] = np.nan
+    dates_np_15 = np.empty(dates)
+    dates_np_15[:] = np.nan
+
+    dates_np_12 = np.empty(12)
+    dates_np_12[:] = np.nan
+
+    dates_np_8 = np.empty(8)
+    dates_np_8[:] = np.nan
+
 
     dates_error = ['2024-12-02', '2024-12-03']
 
@@ -87,17 +96,43 @@ async def fetch_lessons_with_full_info():
         pd.DataFrame(payments).to_excel(writer, sheet_name="payments")
         pd.DataFrame(changes).to_excel(writer, sheet_name="cancelations")
 
-        df_dict = dict()
         for date in df["date"].unique():
+            df_dict = dict()
 
             for coach in df["coach_name"].unique():
                 if date.strftime('%d.%m.%Y') in ast.literal_eval(list(coaches[coaches["full_name"] == coach]["dates"])[0]):
-                    df_test = df[(df["date"] == date) & (df["coach_name"] == coach)][["available", 'dancer1_name', 'dancer2_name', 'paid']]
-                    df_test["couple"] = df_test["dancer1_name"] + " & " + df_test["dancer2_name"]
-                    df_dict[coach] = dates_np if not len(df_test["couple"].values) else df_test["couple"].values
-                    df_dict[f"{coach.split()[0]} Payment Status"] = ["✅"if paid is True else "❌" for paid in df_test["paid"].values]
+                    if date.strftime('%Y-%m-%d') == '2024-12-06':
+                        df_test = df[(df["date"] == date) & (df["coach_name"] == coach)][
+                            ["available", 'dancer1_name', 'dancer2_name', 'paid']]
+                        df_test["couple"] = df_test["dancer1_name"] + " & " + df_test["dancer2_name"]
+                        df_dict[coach] = dates_np_8 if not len(df_test["couple"].values) else df_test["couple"].values
+                        df_dict[f"{coach.split()[0]} Payment Status"] = ["✅" if paid is True else "❌" for paid in
+                                                                         df_test["paid"].values]
+                    elif date.strftime('%Y-%m-%d') in dates_error:
+                        df_test = df[(df["date"] == date) & (df["coach_name"] == coach)][
+                            ["available", 'dancer1_name', 'dancer2_name', 'paid']]
+                        df_test["couple"] = df_test["dancer1_name"] + " & " + df_test["dancer2_name"]
+                        df_dict[coach] = dates_np_15 if not len(df_test["couple"].values) else df_test["couple"].values
+                        df_dict[f"{coach.split()[0]} Payment Status"] = ["✅" if paid is True else "❌" for paid in
+                                                                         df_test["paid"].values]
+                    else:
+                        df_test = df[(df["date"] == date) & (df["coach_name"] == coach)][["available", 'dancer1_name', 'dancer2_name', 'paid']]
+                        df_test["couple"] = df_test["dancer1_name"] + " & " + df_test["dancer2_name"]
+                        df_dict[coach] = dates_np_12 if not len(df_test["couple"].values) else df_test["couple"].values
+                        df_dict[f"{coach.split()[0]} Payment Status"] = ["✅"if paid is True else "❌" for paid in df_test["paid"].values]
+
+                    if date.strftime('%Y-%m-%d') == '2024-12-07':
+                        print(f"{'---'*10}\nCoach - {coach}\n Len of coach lessons - {len(df_dict[coach])}\n Len of payment status - {len(df_dict[f'{coach.split()[0]} Payment Status'])}\n")
+
             try:
-                pd.DataFrame(df_dict, index=(indexes_1 if date.strftime('%Y-%m-%d') in
+                if date.strftime('%Y-%m-%d') == '2024-12-06':
+                    print("Error")
+                    # print("df_dict", df_dict)
+                    pd.DataFrame(df_dict, index=indexes_3).to_excel(writer, sheet_name=date.strftime('%d-%m-%Y'))
+                else:
+                    print(date.strftime('%Y-%m-%d'))
+                    [print(f"{key} - {len(value)}") for key, value in df_dict.items()]
+                    pd.DataFrame(df_dict, index=(indexes_1 if date.strftime('%Y-%m-%d') in
                                                           dates_error else indexes_2)).to_excel(writer,
                                                                                                 sheet_name=date.strftime('%d-%m-%Y'))
             except Exception as e:

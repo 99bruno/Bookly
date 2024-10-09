@@ -162,6 +162,7 @@ async def handle_coach_selection(callback_query: types.CallbackQuery,
 
         dates, lesson_restrictions, booked_lessons_count = await get_lessons_by_coach(coach_id,
                                                                                       data["couples"][int(data["couple_id"])]["couple_id"])
+        print(dates)
 
         for date in dates:
             if not bool(dates[date]):

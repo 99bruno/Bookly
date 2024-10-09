@@ -13,7 +13,9 @@ async def get_coaches_by_program(program_type: str):
         result = await session.execute(
             select(Coach).where(Coach.program == (program_type == "Latin"))
         )
-
+        x = await session.execute(
+            select(Coach)
+        )
         coaches = result.scalars().all()
 
         if not coaches:
