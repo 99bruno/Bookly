@@ -126,12 +126,8 @@ async def fetch_lessons_with_full_info():
 
             try:
                 if date.strftime('%Y-%m-%d') == '2024-12-06':
-                    print("Error")
-                    # print("df_dict", df_dict)
                     pd.DataFrame(df_dict, index=indexes_3).to_excel(writer, sheet_name=date.strftime('%d-%m-%Y'))
                 else:
-                    print(date.strftime('%Y-%m-%d'))
-                    [print(f"{key} - {len(value)}") for key, value in df_dict.items()]
                     pd.DataFrame(df_dict, index=(indexes_1 if date.strftime('%Y-%m-%d') in
                                                           dates_error else indexes_2)).to_excel(writer,
                                                                                                 sheet_name=date.strftime('%d-%m-%Y'))
