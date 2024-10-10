@@ -88,7 +88,6 @@ async def fetch_lessons_with_full_info():
     dates_np_8 = np.empty(8)
     dates_np_8[:] = np.nan
 
-
     dates_error = ['2024-12-02', '2024-12-03']
 
     with pd.ExcelWriter('app/database/schedule.xlsx') as writer:
