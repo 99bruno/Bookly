@@ -62,7 +62,7 @@ async def cancel_booked_lesson(booked_lesson_id: int, data: dict, username: str)
 
             await session.execute(insert(Change).values(
                 time_of_change=datetime.datetime.now().strftime("%D-%m-%Y %H:%M"),
-                dancer_username=username,
+                dancer_username="TBA" if username is None else username,
                 couple_name=data["couples"][int(data["couple_id"])]["dancer1_full_name"]+" & "+data["couples"][int(data["couple_id"])]["dancer2_full_name"],
                 coach_name=data["lessons"][0]["coach"],
                 lesson_date=data["lesson_date"],
