@@ -450,7 +450,6 @@ async def callback_view_schedule_handler(callback_query: types.CallbackQuery,
             schedule_info = await view_coach_schedule(data["coaches_info"][data["current_coach"]]["id"],
                                                       datetime.date(int(date_[2]), int(date_[1]), int(date_[0])))
 
-
             await callback_query.message.edit_text(coach_view_schedule_unpack([
                 callback_query.data.split("_")[-1],
                 schedule_info],

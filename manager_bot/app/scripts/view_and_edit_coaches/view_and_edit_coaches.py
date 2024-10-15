@@ -25,18 +25,15 @@ def coach_unpack_info_for_edit(coach_info, coach_info_message):
 
 def coach_view_schedule_unpack(lessons: list, template: str):
 
-
     return template.format(lessons[0],
                            "\n".join(
-                               [f"• <b>{lesson['time']} </b> - "
-                                f"{(lesson['couple']['couples_name'] + ' ✅' 
-                                    if lesson['couple']["paid_status"] else lesson['couple']['couples_name'] + ' ❌') 
-                                if (lesson['available'] is False) and ('couple' in lesson.keys()) else ''}\n"
+                               [
+                                   f"• <b>{lesson['time']} </b> - "
+                                   f"{(lesson['couple']['couples_name'] + ' ✅' if lesson['couple']['paid_status'] else lesson['couple']['couples_name'] + ' ❌') if 'couple' in lesson else 'Blocked ⚠️' if not lesson['available'] else ''}\n"
 
+                                   for lesson in lessons[1]
+                               ]
 
-                                for lesson in lessons[1]
-
-                                ]
 
                            )
                            )
