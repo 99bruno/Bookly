@@ -12,7 +12,7 @@ async def dancers_list_message_unpack(dancers: list, template: str) -> str:
 async def dancer_info_message_unpack(dancer: dict, template: str, couples: list) -> str:
 
     return template.format(dancer["fullname"], dancer["phone"], dancer["tg_id"],
-                           "\n".join([f"‣ {couple['name']}" for couple in couples]))
+                           "\n".join([f"{idx+1} {couple['name']}" for idx, couple in enumerate(couples)]))
 
 async def couple_info_message_unpack(couple: dict, template: str, schedule) -> str:
     return template.format(couple["name"], await format_booked_lessons(schedule))
