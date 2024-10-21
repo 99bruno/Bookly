@@ -20,3 +20,31 @@ couple_info_message = "• {0}:\n\n{1}"
 couple_schedule_paid_confirm_message = "Are you sure you want to pay for all lessons?"
 
 payment_confirmed_message = "Payment confirmed."
+
+choose_program_message = "Lessons will be booked in pairs:\n{0} ✅\n\nNow choose the program for booking a lesson 👇"
+
+available_dates_message = ("The next step is choosing a coach 💫\n\n"
+                           "Choose a trainer from the list to view available hours 👇")
+
+
+confirm_book_lessons_message = ("Good choice! 🌟\n\n"
+                                "Selected lessons:\n{0}\n\n"
+                                "Total price: {1}\n\n"
+                                "❗️Press 'Confirm booking' it is necessary to fix the lessons for you! "
+                                "After that, you can go back to the menu and add lessons with another trainer.")
+
+unavailable_lessons_message = ("Your classes have been successfully booked except for the following:\n\n{0} \n\n"
+                               "These classes are already booked\n\n"
+                               "<b>app feedback "
+                               "https://forms.gle/RBEEhvezUSzSNu53A'</b>")
+
+cancel_lesson_reason_message = "Please indicate the reason for canceling the lesson."
+
+reschedule_lesson_message = "Choose a convenient time to move the class from {0}:\n👇"
+
+check_schedules_message = ("<b>Schedule for couple {0}</b>👇\n\n{1}\n\n"
+                           "Unpaid classes are marked with '❌', and paid classes are marked with ' ✅'\n\n")
+
+
+
+

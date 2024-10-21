@@ -36,7 +36,6 @@ async def update_coach_info(coach_id: int, column: str, new_value) -> bool:
             coach = result.scalars().first()
 
             if coach:
-
                 if column == "firstname":
                     setattr(coach, column, new_value)
                     setattr(coach, "full_name", new_value + " " + coach.lastname)
@@ -45,7 +44,18 @@ async def update_coach_info(coach_id: int, column: str, new_value) -> bool:
                     setattr(coach, column, new_value)
                     setattr(coach, "full_name", coach.firstname + " " + new_value)
 
-                setattr(coach, column, new_value)
+                elif column == "price" or column == "currency":
+                    setattr(coach, column, new_value)
+
+                    # Update the corresponding lessons
+                    lessons_result = await session.execute(select(Lesson).where(Lesson.id_coach == coach_id))
+                    lessons = lessons_result.scalars().all()
+                    for lesson in lessons:
+                        setattr(lesson, column, new_value)
+
+                else:
+                    setattr(coach, column, new_value)
+
                 await session.commit()
                 return True
             else:

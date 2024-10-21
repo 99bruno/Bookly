@@ -391,7 +391,6 @@ async def callback_return_to_coaches_handler(callback_query: types.CallbackQuery
 
         sentry_sdk.capture_exception(e)
 
-        print(e)
 
 
 @router.callback_query(ListOfCoaches.current_date)
