@@ -13,7 +13,7 @@ from app.templates.start.start import back_main_menu_message
 
 from app.database.requests.search_dancer.search_dancer import *
 
-from app.states.search_dancer.search_dancer import Dancers
+from app.states.search_dancer.search_dancer import *
 
 from sentry_logging.sentry_setup import sentry_sdk
 
@@ -144,7 +144,7 @@ async def couple_info(callback_query: types.CallbackQuery,
 
         schedule = await get_booked_lessons_for_couple(couple["couple_id"])
 
-        await state.update_data(lessons=schedule)
+        await state.update_data(lessons=schedule, current_couple_id=couple_id)
 
         await callback_query.message.edit_text(await couple_info_message_unpack(couple, couple_info_message, schedule))
         await callback_query.message.edit_reply_markup(reply_markup=couple_schedule_keyboard)
@@ -322,6 +322,245 @@ async def confirm_payment(callback_query: types.CallbackQuery,
         await callback_query.message.answer(back_main_menu_message, reply_markup=start_keyboard)
 
         await state.clear()
+
+    except Exception as e:
+
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", callback_query.from_user.id)
+            scope.set_extra("username", callback_query.from_user.username)
+
+        sentry_sdk.capture_exception(e)
+
+
+@router.callback_query(F.data == "manage_lessons")
+async def manage_lessons(callback_query: types.CallbackQuery,
+                         state: FSMContext) -> None:
+
+    try:
+
+        data = await state.get_data()
+
+        couples = data.get("couples_info")
+
+        couple = couples[data["current_couple_id"]]
+
+        schedule = await get_booked_lessons_for_couple(couple["couple_id"])
+
+        await state.update_data(lessons=schedule)
+
+        await callback_query.message.edit_text(await couple_info_message_unpack(couple, couple_info_message, schedule))
+        await callback_query.message.edit_reply_markup(reply_markup=manage_lessons_keyboard)
+
+    except Exception as e:
+
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", callback_query.from_user.id)
+            scope.set_extra("username", callback_query.from_user.username)
+
+        sentry_sdk.capture_exception(e)
+
+
+@router.callback_query(F.data == "return_to_schedule")
+async def return_to_schedule(callback_query: types.CallbackQuery,
+                             state: FSMContext) -> None:
+
+    try:
+
+        data = await state.get_data()
+
+        couples = data.get("couples_info")
+
+        couple = couples[data["current_couple_id"]]
+
+        schedule = await get_booked_lessons_for_couple(couple["couple_id"])
+
+        await state.update_data(lessons=schedule)
+
+        await callback_query.message.edit_text(await couple_info_message_unpack(couple, couple_info_message, schedule))
+        await callback_query.message.edit_reply_markup(reply_markup=couple_schedule_keyboard)
+
+    except Exception as e:
+
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", callback_query.from_user.id)
+            scope.set_extra("username", callback_query.from_user.username)
+
+        sentry_sdk.capture_exception(e)
+
+
+@router.callback_query(F.data == "book_lesson")
+async def book_lesson(callback_query: types.CallbackQuery,
+                      state: FSMContext) -> None:
+
+    try:
+
+        data = await state.get_data()
+        couple = data.get("couples_info")[data.get("current_couple_id")]
+
+        await state.set_state(LessonRegistration.couple_id)
+        await state.update_data(couple_id=couple["couple_id"])
+        await state.set_state(LessonRegistration.program)
+
+        await callback_query.message.edit_text(choose_program_message.format(couple["name"]))
+        await callback_query.message.edit_reply_markup(reply_markup=choose_program_keyboard)
+
+    except Exception as e:
+
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", callback_query.from_user.id)
+            scope.set_extra("username", callback_query.from_user.username)
+
+        sentry_sdk.capture_exception(e)
+
+
+@router.callback_query(F.data == "cancel_lesson")
+async def book_lesson(callback_query: types.CallbackQuery,
+                      state: FSMContext) -> None:
+
+    try:
+
+        data = await state.get_data()
+
+        await callback_query.message.edit_reply_markup(reply_markup=create_keyboard_for_cancel_lesson(sorted_lessons :=
+                                                                                             await sort_lessons(
+                                                                                                 data["lessons"])))
+
+        await state.update_data(sorted_lessons=sorted_lessons)
+
+    except Exception as e:
+
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", callback_query.from_user.id)
+            scope.set_extra("username", callback_query.from_user.username)
+
+        sentry_sdk.capture_exception(e)
+
+
+@router.callback_query(F.data.startswith('cancel_lesson_'))
+async def handle_cancel_booking(callback_query: types.CallbackQuery, state: FSMContext) -> None:
+    try:
+        lesson_id = callback_query.data.split('_')[-1]
+        data = await state.get_data()
+
+        await state.update_data(lesson_id=data["sorted_lessons"][lesson_id], lesson_date=lesson_id)
+        await state.set_state(Dancers.reason)
+
+        await callback_query.message.answer(cancel_lesson_reason_message, reply_markup=types.ReplyKeyboardRemove())
+    except Exception as e:
+
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", callback_query.from_user.id)
+            scope.set_extra("username", callback_query.from_user.username)
+
+        sentry_sdk.capture_exception(e)
+
+
+@router.message(Dancers.reason)
+async def handle_cancel_reason(message: types.Message, state: FSMContext) -> None:
+    try:
+
+        await state.update_data(reason=message.text)
+
+        data = await state.get_data()
+
+        await cancel_booked_lesson(data["lesson_id"], data, message.from_user.username)
+
+        await message.answer("Your lesson has been successfully canceled.", reply_markup=return_to_schedule_keyboard)
+
+    except Exception as e:
+
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", message.from_user.id)
+            scope.set_extra("username", message.from_user.username)
+
+        sentry_sdk.capture_exception(e)
+
+
+@router.callback_query(F.data == 'manager_reschedule_lesson')
+async def move_booking_handler(query: types.CallbackQuery, state: FSMContext) -> None:
+    try:
+        data = await state.get_data()
+
+        await query.message.edit_reply_markup(reply_markup=create_keyboard_for_reschedule_lesson(sorted_lessons :=
+                                                                                                 await sort_lessons_test_2(
+                                                                                                    data["lessons"])))
+
+        await state.update_data(sorted_lessons=sorted_lessons)
+    except Exception as e:
+
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", query.from_user.id)
+            scope.set_extra("username", query.from_user.username)
+
+        sentry_sdk.capture_exception(e)
+
+
+@router.callback_query(F.data == 'return_to_reschedule')
+async def cancel_booking_handler(query: types.CallbackQuery, state: FSMContext) -> None:
+    try:
+        data = await state.get_data()
+
+        await query.message.edit_text(format_string(check_schedules_message,
+                                                   [
+                                                       data["couples_info"][data["current_couple_id"]]["name"],
+                                                       await format_booked_lessons(data["lessons"])
+                                                   ]))
+
+        await query.message.edit_reply_markup(reply_markup=create_keyboard_for_reschedule_lesson(sorted_lessons :=
+                                                                                                 await sort_lessons_test_2(
+                                                                                                     data["lessons"])))
+
+        await state.update_data(sorted_lessons=sorted_lessons)
+    except Exception as e:
+
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", query.from_user.id)
+            scope.set_extra("username", query.from_user.username)
+
+        sentry_sdk.capture_exception(e)
+
+
+@router.callback_query(F.data.startswith('reschedule_lesson_'))
+async def handle_reschedule_booking(callback_query: types.CallbackQuery, state: FSMContext) -> None:
+    try:
+        lesson_id = callback_query.data.split('_')[-1]
+        data = await state.get_data()
+
+        await callback_query.message.edit_text(format_string(reschedule_lesson_message,
+                                                             [
+                                                                 await get_coach_name(data["sorted_lessons"][lesson_id])
+                                                             ]
+                                                             )
+                                               )
+        await callback_query.message.edit_reply_markup(
+            reply_markup=create_keyboard_for_confirm_reschedule_lesson(available_lessons :=
+                                                                       await get_available_lessons_by_lesson_id(
+                                                                    data["sorted_lessons"][lesson_id])))
+
+        await state.update_data(available_lessons=available_lessons, lesson_id=data["sorted_lessons"][lesson_id])
+    except Exception as e:
+
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", callback_query.from_user.id)
+            scope.set_extra("username", callback_query.from_user.username)
+
+        sentry_sdk.capture_exception(e)
+
+
+@router.callback_query(F.data.startswith('reschedule_a_lesson_by_manager_'))
+async def handle_reschedule_lesson(callback_query: types.CallbackQuery, state: FSMContext) -> None:
+    try:
+        lesson_id = callback_query.data.split('_')[-1]
+
+        data = await state.get_data()
+
+        response = await reschedule_lesson(data["lesson_id"], data["available_lessons"][int(lesson_id)]["id"])
+
+        if response:
+            await return_to_schedule(callback_query, state)
+            await callback_query.answer("Lesson successfully rescheduled", show_alert=True)
+        else:
+            await callback_query.answer("Choose another lesson, unfortunately this one is busy(", show_alert=True)
 
     except Exception as e:
 
