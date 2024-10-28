@@ -115,9 +115,9 @@ async def handle_couple_selection(callback_query: types.CallbackQuery,
         data = await state.get_data()
         await state.set_state(LessonRegistration.program)
 
-        await callback_query.message.answer(format_string(choose_program_message,
-                                                          concatenate_couples([data["couples"][int(couple_id)]])),
-                                            reply_markup=choose_program_keyboard)
+        await callback_query.message.edit_text(format_string(choose_program_message,
+                                                          concatenate_couples([data["couples"][int(couple_id)]])))
+        await callback_query.message.edit_reply_markup(reply_markup=choose_program_keyboard)
 
     except Exception as e:
 
@@ -162,7 +162,6 @@ async def handle_coach_selection(callback_query: types.CallbackQuery,
 
         dates, lesson_restrictions, booked_lessons_count = await get_lessons_by_coach(coach_id,
                                                                                       data["couples"][int(data["couple_id"])]["couple_id"])
-        print(dates)
 
         for date in dates:
             if not bool(dates[date]):
@@ -198,8 +197,6 @@ async def process_number_selection(callback_query: types.CallbackQuery,
                                    state: FSMContext):
     try:
         data = await state.get_data()
-
-        print(data)
 
         choose_dates = data.get('choose_dates', [])
         all_dates = data.get('all_dates', [])
@@ -250,8 +247,8 @@ async def process_number_selection(callback_query: types.CallbackQuery,
             await state.update_data(selected_dates=choose_dates)
             data_of_lessons = await get_lessons_info(choose_dates)
 
-            await callback_query.message.answer(format_lesson_info(data_of_lessons, confirm_book_lessons_message),
-                                                reply_markup=confirm_book_lessons_keyboard)
+            await callback_query.message.edit_caption(caption=format_lesson_info(data_of_lessons, confirm_book_lessons_message))
+            await callback_query.message.edit_reply_markup(reply_markup=confirm_book_lessons_keyboard)
 
             await state.set_state(LessonRegistration.confirmation)
 
@@ -262,7 +259,6 @@ async def process_number_selection(callback_query: types.CallbackQuery,
             scope.set_extra("username", callback_query.from_user.username)
 
         sentry_sdk.capture_exception(e)
-
 
 
 @router.callback_query(lambda event: event.data == 'lesson_booking_confirmation')

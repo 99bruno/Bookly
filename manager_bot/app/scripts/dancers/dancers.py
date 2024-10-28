@@ -2,7 +2,7 @@ from collections import defaultdict
 from datetime import date
 from typing import Dict, Any
 
-currency = ["USD", "EUR", "UAH", "GBP"]
+currency = ["EUR", "USD", "UAH", "GBP"]
 
 
 async def dancers_list_message_unpack(dancers: list, template: str) -> str:

@@ -16,6 +16,12 @@ from .settings.settings import router as settings_router
 from .settings.managers import router as managers_router
 from .settings.create_event import router as create_event_router
 
+from .create_couple.create_couple import router as create_couple_router
+from .search_dancer.book_a_lesson import router as book_a_lesson_router
+
+from .camp_settings.schedule_settings.block_lesson import router as block_lesson_router
+from .camp_settings.schedule_settings.unblock_lesson import router as unblock_lesson_router
+
 """from .start.start import router as start_router
 from manager_bot.app.handlers.test.coaches_settings.coaches_settings import router as coaches_settings_router
 from manager_bot.app.handlers.test.coaches_settings.add_new_coach import router as add_coach_router
@@ -45,11 +51,14 @@ def register_all_handlers():
     router.include_router(add_coach_router)
     router.include_router(edit_camp_info_router)
     router.include_router(camp_settings_edit_router)
+    router.include_router(create_couple_router)
+    router.include_router(book_a_lesson_router)
 
     router.include_router(settings_router)
     router.include_router(managers_router)
     router.include_router(create_event_router)
-
+    router.include_router(block_lesson_router)
+    router.include_router(unblock_lesson_router)
 
     """router.include_router(start_router)
     router.include_router(coaches_settings_router)
