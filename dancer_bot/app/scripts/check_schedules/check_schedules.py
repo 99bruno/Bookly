@@ -3,7 +3,7 @@ from typing import Dict, Any
 
 
 
-currency = ["USD", "EUR", "UAH", "GBP"]
+currency = ["EUR", "USD", "UAH", "GBP"]
 
 
 def format_schedules(schedule: list[dict]) -> str:

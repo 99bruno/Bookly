@@ -5,7 +5,7 @@ from collections import defaultdict
 
 import datetime
 
-currency = ["USD", "EUR", "UAH", "GBP"]
+currency = ["EUR", "USD", "UAH", "GBP"]
 
 
 async def get_coaches_by_program(program_type: str):
