@@ -1,6 +1,6 @@
+from app.database.models import Event, async_session
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.database.models import async_session, Event
 
 
 async def update_event(event_id: int, update_data: dict):

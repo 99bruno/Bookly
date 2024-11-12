@@ -1,26 +1,29 @@
 from aiogram import Router
 
-from .start.start import router as start_router
-from .view_and_edit_coaches.view_and_edit_coaches import router as view_and_edit_coaches_router
-from .search_dancer.search_dancer import router as search_dancer_router
-from .view_full_schedule.view_full_schedule import router as view_full_schedule_router
-from .camp_settings.camp_settings_main import router as camp_settings_router
-from .camp_settings.coaches_settings.coaches_settings import router as coaches_settings_router
-from .camp_settings.coaches_settings.add_new_coach import router as add_coach_router
-
+from .camp_settings.camp_settings.camp_settings import (
+    router as camp_settings_edit_router,
+)
 from .camp_settings.camp_settings.edit_camp_info import router as edit_camp_info_router
-from .camp_settings.camp_settings.camp_settings import router as camp_settings_edit_router
-
-
-from .settings.settings import router as settings_router
-from .settings.managers import router as managers_router
-from .settings.create_event import router as create_event_router
-
+from .camp_settings.camp_settings_main import router as camp_settings_router
+from .camp_settings.coaches_settings.add_new_coach import router as add_coach_router
+from .camp_settings.coaches_settings.coaches_settings import (
+    router as coaches_settings_router,
+)
+from .camp_settings.schedule_settings.block_lesson import router as block_lesson_router
+from .camp_settings.schedule_settings.unblock_lesson import (
+    router as unblock_lesson_router,
+)
 from .create_couple.create_couple import router as create_couple_router
 from .search_dancer.book_a_lesson import router as book_a_lesson_router
-
-from .camp_settings.schedule_settings.block_lesson import router as block_lesson_router
-from .camp_settings.schedule_settings.unblock_lesson import router as unblock_lesson_router
+from .search_dancer.search_dancer import router as search_dancer_router
+from .settings.create_event import router as create_event_router
+from .settings.managers import router as managers_router
+from .settings.settings import router as settings_router
+from .start.start import router as start_router
+from .view_and_edit_coaches.view_and_edit_coaches import (
+    router as view_and_edit_coaches_router,
+)
+from .view_full_schedule.view_full_schedule import router as view_full_schedule_router
 
 """from .start.start import router as start_router
 from manager_bot.app.handlers.test.coaches_settings.coaches_settings import router as coaches_settings_router

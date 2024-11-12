@@ -1,29 +1,27 @@
 import asyncio
 import logging
-import sys
 import os
-
-from dotenv import load_dotenv
+import sys
 
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-
+from app.database.models import async_main
 from app.handlers import register_all_handlers
-
 from app.middleware.check_access import AccessControlMiddleware
 from app.middleware.delete_messges import AccessMiddleware
-
-from app.database.models import async_main
+from dotenv import load_dotenv
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-logging.getLogger('aiogram').setLevel(logging.WARNING)
+logging.getLogger("aiogram").setLevel(logging.WARNING)
 
 load_dotenv()
 
-bot = Bot(token=os.getenv("TOKEN"), default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+bot = Bot(
+    token=os.getenv("TOKEN"), default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+)
 dp = Dispatcher()
 
 latest_messages = {}
