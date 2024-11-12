@@ -1,43 +1,66 @@
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    KeyboardButton,
+    ReplyKeyboardMarkup,
+)
 
 
 def create_keyboard_for_dancers(dancers: list) -> InlineKeyboardMarkup:
     keyboard = []
     for i in range(0, len(dancers), 2):
-        row = [InlineKeyboardButton(text=f"Dancer {i+1}", callback_data=f'dancer_{i}')]
+        row = [InlineKeyboardButton(text=f"Dancer {i+1}", callback_data=f"dancer_{i}")]
         if i + 1 < len(dancers):
-            row.append(InlineKeyboardButton(text=f"Dancer {i+2}", callback_data=f'dancer_{i + 1}'))
+            row.append(
+                InlineKeyboardButton(
+                    text=f"Dancer {i+2}", callback_data=f"dancer_{i + 1}"
+                )
+            )
         keyboard.append(row)
 
-    keyboard.append([InlineKeyboardButton(text="Return", callback_data='back_to_menu')])
+    keyboard.append([InlineKeyboardButton(text="Return", callback_data="back_to_menu")])
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
 
 def create_keyboard_for_couples(couples: list) -> InlineKeyboardMarkup:
     keyboard = []
     for i in range(0, len(couples), 2):
-        row = [InlineKeyboardButton(text=f"Couple {i+1}", callback_data=f'couple_{i}')]
+        row = [InlineKeyboardButton(text=f"Couple {i+1}", callback_data=f"couple_{i}")]
         if i + 1 < len(couples):
-            row.append(InlineKeyboardButton(text=f"Couple {i+2}", callback_data=f'couple_{i + 1}'))
+            row.append(
+                InlineKeyboardButton(
+                    text=f"Couple {i+2}", callback_data=f"couple_{i + 1}"
+                )
+            )
         keyboard.append(row)
 
-    keyboard.append([
-        InlineKeyboardButton(text="Return", callback_data='return_to_dancers'),
-        InlineKeyboardButton(text="Back to menu", callback_data='back_to_menu')
-    ])
+    keyboard.append(
+        [
+            InlineKeyboardButton(text="Return", callback_data="return_to_dancers"),
+            InlineKeyboardButton(text="Back to menu", callback_data="back_to_menu"),
+        ]
+    )
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
 
 def create_keyboard_for_lessons(lessons: list) -> InlineKeyboardMarkup:
     keyboard = []
     for lesson in lessons:
-        row = [InlineKeyboardButton(text=f"Lesson {lesson}", callback_data=f'lesson_{lesson}')]
+        row = [
+            InlineKeyboardButton(
+                text=f"Lesson {lesson}", callback_data=f"lesson_{lesson}"
+            )
+        ]
         keyboard.append(row)
 
-    keyboard.append([
-        InlineKeyboardButton(text="Return", callback_data='return_to_dancers'),
-        InlineKeyboardButton(text="Confirm", callback_data='confirm_payment_selected')
-    ])
+    keyboard.append(
+        [
+            InlineKeyboardButton(text="Return", callback_data="return_to_dancers"),
+            InlineKeyboardButton(
+                text="Confirm", callback_data="confirm_payment_selected"
+            ),
+        ]
+    )
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
 
@@ -47,8 +70,8 @@ couple_schedule_keyboard = InlineKeyboardMarkup(
         [InlineKeyboardButton(text="Pay selected", callback_data="pay_selected")],
         [
             InlineKeyboardButton(text="Return", callback_data="return_to_couple"),
-            InlineKeyboardButton(text="Back to menu", callback_data="back_to_menu")
-        ]
+            InlineKeyboardButton(text="Back to menu", callback_data="back_to_menu"),
+        ],
     ]
 )
 
@@ -57,7 +80,7 @@ couple_schedule_paid_confirm_keyboard = InlineKeyboardMarkup(
         [InlineKeyboardButton(text="Confirm", callback_data="confirm_payment")],
         [
             InlineKeyboardButton(text="Return", callback_data="return_to_couple"),
-            InlineKeyboardButton(text="Back to menu", callback_data="back_to_menu")
-        ]
+            InlineKeyboardButton(text="Back to menu", callback_data="back_to_menu"),
+        ],
     ]
 )

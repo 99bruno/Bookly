@@ -1,4 +1,4 @@
-from aiogram.fsm.state import StatesGroup, State
+from aiogram.fsm.state import State, StatesGroup
 
 
 class Dancers(StatesGroup):
@@ -12,4 +12,3 @@ class Dancers(StatesGroup):
     lessons_to_pay = State()
 
     select_lessons = State()
-

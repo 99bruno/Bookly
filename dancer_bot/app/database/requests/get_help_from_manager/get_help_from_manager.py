@@ -1,5 +1,5 @@
+from app.database.models import Event, async_session
 from sqlalchemy import select
-from app.database.models import async_session, Event
 
 
 async def get_event_info(event_id=1):

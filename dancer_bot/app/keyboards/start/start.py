@@ -1,4 +1,4 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 
 start_keyboard = ReplyKeyboardMarkup(
     keyboard=[
@@ -6,9 +6,9 @@ start_keyboard = ReplyKeyboardMarkup(
         [KeyboardButton(text="Мої бронювання 🕒")],
         [KeyboardButton(text="Інформація про кемп 🪩")],
         [KeyboardButton(text="Потрібна допомога? 🆘")],
-             ],
+    ],
     resize_keyboard=True,
-    input_field_placeholder="Choose"
+    input_field_placeholder="Choose",
 )
 
 back_to_main_menu_keyboard = ReplyKeyboardMarkup(
@@ -16,5 +16,5 @@ back_to_main_menu_keyboard = ReplyKeyboardMarkup(
         [KeyboardButton(text="Повернутись в головне меню")],
     ],
     resize_keyboard=True,
-    input_field_placeholder="Choose"
+    input_field_placeholder="Choose",
 )

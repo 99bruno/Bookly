@@ -1,4 +1,4 @@
-from aiogram.fsm.state import StatesGroup, State
+from aiogram.fsm.state import State, StatesGroup
 
 
 class NewCoach(StatesGroup):
@@ -9,4 +9,3 @@ class NewCoach(StatesGroup):
     dates = State()
     selecting_numbers = State()
     waiting_for_numbers = State()
-
