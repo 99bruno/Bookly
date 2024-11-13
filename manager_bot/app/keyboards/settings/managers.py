@@ -1,5 +1,9 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
-
+from aiogram.types import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    KeyboardButton,
+    ReplyKeyboardMarkup,
+)
 
 managers_kb = ReplyKeyboardMarkup(
     keyboard=[
@@ -8,17 +12,22 @@ managers_kb = ReplyKeyboardMarkup(
         [KeyboardButton(text="Remove manager")],
         [
             KeyboardButton(text="Back to settings"),
-            KeyboardButton(text="Back to the main menu")],
+            KeyboardButton(text="Back to the main menu"),
         ],
+    ],
     resize_keyboard=True,
-    input_field_placeholder="Choose"
+    input_field_placeholder="Choose",
 )
 
 
 async def remove_manager_kb(managers: list):
     keyboard = []
     for idx, manager in enumerate(managers):
-        row = [InlineKeyboardButton(text=f"Manager {idx+1}", callback_data=f'manager_{manager["id"]}')]
+        row = [
+            InlineKeyboardButton(
+                text=f"Manager {idx+1}", callback_data=f'manager_{manager["id"]}'
+            )
+        ]
         keyboard.append(row)
 
     return InlineKeyboardMarkup(inline_keyboard=keyboard)

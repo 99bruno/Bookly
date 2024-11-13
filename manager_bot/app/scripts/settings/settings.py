@@ -1,6 +1,6 @@
 from aiogram import types
-from app.database.requests.check_user import check_admin
 from aiogram.fsm.context import FSMContext
+from app.database.requests.check_user import check_admin
 
 
 def restricted(func):

@@ -1,5 +1,4 @@
-from app.database.models import async_session
-from app.database.models import Manager, Event
+from app.database.models import Event, Manager, async_session
 from sqlalchemy import select
 
 
@@ -34,5 +33,7 @@ async def check_admin(tg_id):
 
 async def get_admins():
     async with async_session() as session:
-        admins = await session.execute(select(Manager.chat_id).where(Manager.admin==True))
+        admins = await session.execute(
+            select(Manager.chat_id).where(Manager.admin == True)
+        )
         return admins.scalars().all()

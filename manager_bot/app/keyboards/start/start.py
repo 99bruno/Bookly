@@ -1,4 +1,4 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 
 start_keyboard = ReplyKeyboardMarkup(
     keyboard=[
@@ -8,5 +8,5 @@ start_keyboard = ReplyKeyboardMarkup(
         [KeyboardButton(text="Camp Settings")],
     ],
     resize_keyboard=True,
-    input_field_placeholder="Choose what you want to do"
+    input_field_placeholder="Choose what you want to do",
 )

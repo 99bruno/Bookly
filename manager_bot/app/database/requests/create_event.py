@@ -1,7 +1,5 @@
-from app.database.models import async_session
-from app.database.models import Coach, Event, Lesson, BookedLesson
-
-from sqlalchemy import update, delete
+from app.database.models import BookedLesson, Coach, Event, Lesson, async_session
+from sqlalchemy import delete, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
@@ -10,7 +8,9 @@ from sqlalchemy.orm import selectinload
 async def add_or_update_event(event_data):
     async with async_session() as session:
         # Check if the event exists
-        result = await session.execute(select(Event).where(Event.id == event_data['id']))
+        result = await session.execute(
+            select(Event).where(Event.id == event_data["id"])
+        )
         event = result.scalar_one_or_none()
 
         if event:
@@ -30,12 +30,17 @@ async def add_or_update_event(event_data):
 
 async def delete_related_data(session: AsyncSession, event_id: int):
     # Delete related coaches, lessons and booked lessons
-    result = await session.execute(select(Coach).where(Coach.id_event == event_id).options(
-        selectinload(Coach.lessons).selectinload(Lesson.booked_lessons)))
+    result = await session.execute(
+        select(Coach)
+        .where(Coach.id_event == event_id)
+        .options(selectinload(Coach.lessons).selectinload(Lesson.booked_lessons))
+    )
     coaches = result.scalars().all()
 
     for coach in coaches:
         for lesson in coach.lessons:
-            await session.execute(delete(BookedLesson).where(BookedLesson.id_lesson == lesson.id))
+            await session.execute(
+                delete(BookedLesson).where(BookedLesson.id_lesson == lesson.id)
+            )
         await session.execute(delete(Lesson).where(Lesson.id_coach == coach.id))
     await session.execute(delete(Coach).where(Coach.id_event == event_id))

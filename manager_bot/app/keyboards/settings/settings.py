@@ -1,5 +1,9 @@
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton
-
+from aiogram.types import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    KeyboardButton,
+    ReplyKeyboardMarkup,
+)
 
 settings_kb = ReplyKeyboardMarkup(
     keyboard=[
@@ -7,7 +11,7 @@ settings_kb = ReplyKeyboardMarkup(
         [KeyboardButton(text="Edit managers")],
         [KeyboardButton(text="Ban user")],
         [KeyboardButton(text="Back to the main menu")],
-             ],
+    ],
     resize_keyboard=True,
-    input_field_placeholder="Choose"
+    input_field_placeholder="Choose",
 )

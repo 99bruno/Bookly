@@ -1,4 +1,9 @@
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    KeyboardButton,
+    ReplyKeyboardMarkup,
+)
 
 edit_current_event_keyboard = ReplyKeyboardMarkup(
     keyboard=[
@@ -6,7 +11,7 @@ edit_current_event_keyboard = ReplyKeyboardMarkup(
         [KeyboardButton(text="Camp info")],
         [KeyboardButton(text="Dancers info")],
         [KeyboardButton(text="Back to the main menu")],
-             ],
+    ],
     resize_keyboard=True,
-    input_field_placeholder="Choose"
+    input_field_placeholder="Choose",
 )
