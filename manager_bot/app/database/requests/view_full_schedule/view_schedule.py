@@ -176,6 +176,9 @@ async def fetch_lessons_with_full_info():
     dates_np_15 = np.empty(dates)
     dates_np_15[:] = np.nan
 
+    dates_np_17 = np.empty(17)
+    dates_np_17[:] = np.nan
+
     dates_np_12 = np.empty(12)
     dates_np_12[:] = np.nan
 
@@ -217,6 +220,12 @@ async def fetch_lessons_with_full_info():
                     if date_str == "2024-12-06":
                         df_dict[coach] = (
                             dates_np_8
+                            if df_test["couple"].empty
+                            else df_test["couple"].values
+                        )
+                    elif date_str in ["2024-12-04", "2024-12-05"]:
+                        df_dict[coach] = (
+                            dates_np_17
                             if df_test["couple"].empty
                             else df_test["couple"].values
                         )
