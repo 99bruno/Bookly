@@ -252,6 +252,4 @@ async def fetch_lessons_with_full_info():
                         writer, sheet_name=date_str_dmy
                     )
             except Exception as e:
-                print(f"Error processing date {date_str_dmy} - {e}")
-
-# jdd: I'm not sure what this function does, but it seems to be a bit of a mess.
+                print(f"Error processing date {date_str_dmy} - {e} Fuck!!!!!")
