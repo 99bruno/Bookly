@@ -19,10 +19,12 @@ dp = Dispatcher()
 async def send_notifications(message: str, users: Generator) -> None:
     try:
         for user in users:
+            print(f"Try to send message to {user}")
             await bot.send_message(
                 chat_id=user,
                 text=message
             )
+            print(f"Success, message sent to {user}")
     except Exception as e:
         with sentry_sdk.configure_scope() as scope:
             scope.set_extra("user_id", message.from_user.id)
