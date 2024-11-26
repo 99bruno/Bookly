@@ -29,3 +29,5 @@ async def send_notifications(message: str, users: Generator) -> None:
             scope.set_extra("username", message.from_user.username)
 
         sentry_sdk.capture_exception(e)
+        print("Error")
+        print(e)
