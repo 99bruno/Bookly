@@ -5,6 +5,7 @@ from typing import Generator
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from sentry_logging.sentry_setup import sentry_sdk
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -22,5 +23,9 @@ async def send_notifications(message: str, users: Generator) -> None:
                 chat_id=user,
                 text=message
             )
-    except :
-        pass
+    except Exception as e:
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", message.from_user.id)
+            scope.set_extra("username", message.from_user.username)
+
+        sentry_sdk.capture_exception(e)
