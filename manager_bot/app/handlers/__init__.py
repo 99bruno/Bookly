@@ -25,6 +25,8 @@ from .view_and_edit_coaches.view_and_edit_coaches import (
 )
 from .view_full_schedule.view_full_schedule import router as view_full_schedule_router
 
+from .announcement.announcement import router as announcement_router
+
 """from .start.start import router as start_router
 from manager_bot.app.handlers.test.coaches_settings.coaches_settings import router as coaches_settings_router
 from manager_bot.app.handlers.test.coaches_settings.add_new_coach import router as add_coach_router
@@ -62,6 +64,8 @@ def register_all_handlers():
     router.include_router(create_event_router)
     router.include_router(block_lesson_router)
     router.include_router(unblock_lesson_router)
+
+    router.include_router(announcement_router)
 
     """router.include_router(start_router)
     router.include_router(coaches_settings_router)

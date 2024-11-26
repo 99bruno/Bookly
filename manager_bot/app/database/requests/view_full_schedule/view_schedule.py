@@ -219,7 +219,7 @@ async def fetch_lessons_with_full_info():
                     )
                     if date_str == "2024-12-06":
                         df_dict[coach] = (
-                            dates_np_8
+                            dates_np_12
                             if df_test["couple"].empty
                             else df_test["couple"].values
                         )

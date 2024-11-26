@@ -10,6 +10,7 @@ camp_settings_kb = ReplyKeyboardMarkup(
         [KeyboardButton(text="Coaches settings 🕺💃")],
         [KeyboardButton(text="Camp settings 🏕")],
         [KeyboardButton(text="Schedule settings 📅")],
+        [KeyboardButton(text="Make a announcement 📢")],
         [KeyboardButton(text="Back to the main menu")],
     ],
     resize_keyboard=True,
