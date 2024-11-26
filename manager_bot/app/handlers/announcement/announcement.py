@@ -44,7 +44,10 @@ async def camp_settings_handler(message: types.Message, state: FSMContext) -> No
 @router.message(Announcement.msg)
 async def camp_settings_handler(message: types.Message, state: FSMContext) -> None:
     try:
+        print("Message state")
+        print((await state.get_data()).get("users_id"))
         await send_notifications(message.text, (await state.get_data()).get("users_id"))
+        print("Message sent")
 
         await message.answer(announcements_all_users_confirmation_message, reply_markup=announcements_main_kb)
         await state.clear()
