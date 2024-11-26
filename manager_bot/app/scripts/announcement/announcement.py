@@ -1,6 +1,7 @@
 
 import os
 from typing import Generator
+import time
 
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
@@ -24,6 +25,7 @@ async def send_notifications(message: str, users: Generator) -> None:
                 chat_id=user,
                 text=message
             )
+            time.sleep(1)
             print(f"Success, message sent to {user}")
     except Exception as e:
         with sentry_sdk.configure_scope() as scope:
