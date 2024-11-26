@@ -46,7 +46,7 @@ async def camp_settings_handler(message: types.Message, state: FSMContext) -> No
     try:
         print("Message state")
         print((await state.get_data()).get("users_id"))
-        await send_notifications(message.text, (await state.get_data()).get("users_id"))
+        await send_notifications(message.text, (await state.get_data()).get("users_id"), message)
         print("Message sent")
 
         await message.answer(announcements_all_users_confirmation_message, reply_markup=announcements_main_kb)
