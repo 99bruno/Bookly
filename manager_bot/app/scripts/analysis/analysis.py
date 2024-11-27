@@ -11,10 +11,16 @@ async def analysis_booked_lessons_unpack(lessons: tuple) -> str:
 
 
 async def analysis_coaches_booking_rating_unpack(coaches: list) -> str:
-    return ("<b>Coaches booking rating:</b>\n\n"
-            "<blockquote>")+"\n".join(
-            [f"{idx+1}. {coach[1]}: {coach[2]}/{(coach[3]-(coach[4]-coach[2]))} ~ {coach[2]/(coach[3]-(coach[4]-coach[2])) * 100:.1f}%" for idx, coach in enumerate(sorted(coaches, key=lambda x: x[2]/x[3], reverse=True))]
-            )+"</blockquote>"
+    try:
+        return ("<b>Coaches booking rating:</b>\n\n"
+         "<blockquote>") + "\n".join(
+            [
+                f"{idx + 1}. {coach[1]}: {coach[2]}/{(coach[3] - (coach[4] - coach[2]))} ~ {coach[2] / (coach[3] - (coach[4] - coach[2])) * 100:.1f}%"
+                for idx, coach in enumerate(sorted(coaches, key=lambda x: x[1] / x[2], reverse=True))]
+        ) + "</blockquote>"
+
+    except:
+        print(coaches)
 
 
 async def analysis_coaches_with_available_lessons_unpack(coaches: list) -> str:
