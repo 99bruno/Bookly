@@ -39,6 +39,6 @@ async def analysis_overall_income_unpack(income: list) -> str:
             f"</blockquote>"
             f"\n\n<b>Paid lessons:</b>\n\n"
             f"<blockquote>"
-            f"{"\n".join([f"• {currency[3]}/{currency[2]} {currency[0]} ~ {currency[2]/currency[1] * 100:.1f}%" for currency in income])}"
+            f"{"\n".join([f"• {currency[3]}/{currency[2]} {currency[0]} ~ {currency[3]/currency[2] * 100:.1f}%" for currency in income])}"
             "</blockquote>"
             )
