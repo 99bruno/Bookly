@@ -1,6 +1,7 @@
 from itertools import groupby
 import datetime
 
+
 async def analysis_booked_lessons_unpack(lessons: tuple) -> str:
     return (f"<b>Booked lessons:</b>\n\n"
             f"<blockquote>• {lessons[0]}/{lessons[1]-(lessons[2]-lessons[0])} ~ "
@@ -16,7 +17,7 @@ async def analysis_coaches_booking_rating_unpack(coaches: list) -> str:
          "<blockquote>") + "\n".join(
             [
                 f"{idx + 1}. {coach[1]}: {coach[2]}/{(coach[3] - (coach[4] - coach[2]))} ~ {coach[2] / (coach[3] - (coach[4] - coach[2])) * 100:.1f}%"
-                for idx, coach in enumerate(sorted(coaches, key=lambda x: x[1] / x[2], reverse=True))]
+                for idx, coach in enumerate(sorted(coaches, key=lambda x: x[2] / (x[3] - (x[4] - x[2])), reverse=True))]
         ) + "</blockquote>"
 
     except:
