@@ -48,6 +48,7 @@ async def analysis_coaches_booking_rating_handler(query: types.CallbackQuery) ->
             scope.set_extra("username", query.from_user.username)
 
         sentry_sdk.capture_exception(e)
+        print(e)
 
 
 @router.callback_query(lambda c: c.data == "analysis_coaches_with_available_lessons")
