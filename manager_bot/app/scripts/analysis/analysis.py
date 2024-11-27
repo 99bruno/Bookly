@@ -17,7 +17,7 @@ async def analysis_coaches_booking_rating_unpack(coaches: list) -> str:
          "<blockquote>") + "\n".join(
             [
                 f"{idx + 1}. {coach[1]}: {coach[2]}/{(coach[3] - (coach[4] - coach[2]))} ~ {coach[2] / (coach[3] - (coach[4] - coach[2])) * 100:.1f}%"
-                for idx, coach in enumerate(sorted(coaches, key=lambda x: x[2] / x[3] if (x[3] - (x[4] - x[2])) < 0 else x[2] / (x[3] - (x[4] - x[2])), reverse=True)) if (coach[3] - (coach[4] - coach[2])) > 0]
+                for idx, coach in enumerate(sorted(coaches, key=lambda x: x[2] / x[3] if (x[3] - (x[4] - x[2])) <= 0 else x[2] / (x[3] - (x[4] - x[2])), reverse=True)) if (coach[3] - (coach[4] - coach[2])) > 0]
         ) + "</blockquote>"
 
     except:
