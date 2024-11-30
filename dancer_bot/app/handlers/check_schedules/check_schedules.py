@@ -147,13 +147,14 @@ async def cancel_booking_handler(query: types.CallbackQuery, state: FSMContext) 
 @router.callback_query(lambda event: event.data == "cancel_lesson")
 async def cancel_booking_handler(query: types.CallbackQuery, state: FSMContext) -> None:
     try:
-        data = await state.get_data()
+        await query.message.answer("Нажаль уже не можна скасовувати уроки(", show_alert=True)
+        """data = await state.get_data()
 
         await query.message.edit_reply_markup(
             reply_markup=create_keyboard_for_cancel_lesson(
                 sorted_lessons := await sort_lessons(data["lessons"])
             )
-        )
+        )"""
 
         await state.update_data(sorted_lessons=sorted_lessons)
     except Exception as e:
@@ -164,7 +165,7 @@ async def cancel_booking_handler(query: types.CallbackQuery, state: FSMContext) 
         sentry_sdk.capture_exception(e)
 
 
-@router.callback_query(lambda event: event.data.startswith("cancel_lesson_"))
+"""@router.callback_query(lambda event: event.data.startswith("cancel_lesson_"))
 async def handle_cancel_booking(
     callback_query: types.CallbackQuery, state: FSMContext
 ) -> None:
@@ -185,7 +186,7 @@ async def handle_cancel_booking(
             scope.set_extra("user_id", callback_query.from_user.id)
             scope.set_extra("username", callback_query.from_user.username)
 
-        sentry_sdk.capture_exception(e)
+        sentry_sdk.capture_exception(e)"""
 
 
 @router.callback_query(lambda event: event.data == "return_to_schedule")
@@ -232,7 +233,7 @@ async def handle_cancel_reason(message: types.Message, state: FSMContext) -> Non
         sentry_sdk.capture_exception(e)
 
 
-@router.message(F.text == "Скасувати урок")
+"""@router.message(F.text == "Скасувати урок")
 async def cancel_booking_handler(message: types.Message, state: FSMContext) -> None:
     try:
         data = await state.get_data()
@@ -246,7 +247,7 @@ async def cancel_booking_handler(message: types.Message, state: FSMContext) -> N
             scope.set_extra("user_id", message.from_user.id)
             scope.set_extra("username", message.from_user.username)
 
-        sentry_sdk.capture_exception(e)
+        sentry_sdk.capture_exception(e)"""
 
 
 @router.callback_query(lambda event: event.data == "reschedule_lesson")
