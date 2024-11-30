@@ -25,7 +25,8 @@ dp = Dispatcher()
 
 
 def dj_template(lessons: tuple) -> str:
-    return (f"Hi, Jonathan! It is daily update on amount of booked lessons from <b>Pasha</b> and <b>Nastya</b>)\n\n"
+    return (f"Hi, Jonathan! "
+            f"It is daily update on amount of booked lessons from <b>Pasha</b> and <b>Nastya</b>)\n\n"
             f"Today {lessons[0]}/{lessons[1]-(lessons[2]-lessons[0])} ~ "
             f"{lessons[0]/(lessons[1]-(lessons[2]-lessons[0])) * 100:.1f} % lessons are booked\n\n"
             f"Have a great day 💛")
