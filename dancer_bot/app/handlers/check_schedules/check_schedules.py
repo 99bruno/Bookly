@@ -147,7 +147,7 @@ async def cancel_booking_handler(query: types.CallbackQuery, state: FSMContext) 
 @router.callback_query(lambda event: event.data == "cancel_lesson")
 async def cancel_booking_handler(query: types.CallbackQuery, state: FSMContext) -> None:
     try:
-        await query.message.answer("Нажаль уже не можна скасовувати уроки(", show_alert=True)
+        await query.answer("Нажаль уже не можна скасовувати уроки(", show_alert=True)
         """data = await state.get_data()
 
         await query.message.edit_reply_markup(
