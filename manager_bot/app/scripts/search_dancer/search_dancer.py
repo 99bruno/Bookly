@@ -66,6 +66,25 @@ async def format_booked_lessons(booked_lessons: list) -> str:
     return "\n".join(formatted_output)
 
 
+async def sort_lessons_payment(schedules: list) -> dict[str, Any]:
+    lessons_by_date = defaultdict(list)
+
+    formated_output = dict()
+    for lesson in schedules:
+        lesson_date = lesson["lesson"]["date"]
+        lessons_by_date[lesson_date].append(lesson)
+
+    for lesson_date, lessons in sorted(lessons_by_date.items()):
+        for lesson in sorted(lessons, key=lambda x: x["lesson"]["start_time"]):
+            if not lesson["paid"]:
+                formated_output[
+                    f'{lesson_date.strftime("%d-%m")} {lesson["lesson"]["start_time"]} {lesson["coach"]["full_name"]}'
+                ] = int(lesson["booked_lesson_id"])
+
+    return formated_output
+
+
+
 async def sort_lessons(schedules: list) -> dict[str, Any]:
     lessons_by_date = defaultdict(list)
 

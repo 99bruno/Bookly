@@ -211,10 +211,11 @@ async def pay_all(callback_query: types.CallbackQuery, state: FSMContext) -> Non
     try:
         data = await state.get_data()
         lessons = data.get("lessons")
+        print(lessons)
 
         await state.set_state(Dancers.select_lessons)
 
-        available_lessons_to_pay = await sort_lessons(lessons)
+        available_lessons_to_pay = await sort_lessons_payment(lessons)
 
         await state.update_data(available_lessons_to_pay=available_lessons_to_pay)
 
