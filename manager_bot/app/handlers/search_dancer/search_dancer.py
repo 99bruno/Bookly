@@ -108,6 +108,7 @@ async def return_to_dancers(
     callback_query: types.CallbackQuery, state: FSMContext
 ) -> None:
     try:
+        await state.update_data(lessons_to_pay=[])
         data = await state.get_data()
         dancers = data.get("dancers_info")
 
@@ -129,6 +130,7 @@ async def return_to_dancers(
 @router.callback_query(F.data.startswith("couple_"))
 async def couple_info(callback_query: types.CallbackQuery, state: FSMContext) -> None:
     try:
+        await state.update_data(lessons_to_pay=[])
         data = await state.get_data()
 
         couples = data.get("couples_info")
