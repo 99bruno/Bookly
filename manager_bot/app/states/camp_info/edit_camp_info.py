@@ -5,3 +5,8 @@ class EditEvent(StatesGroup):
     name = State()
     date = State()
     description = State()
+
+
+class Test(StatesGroup):
+    name = State()
+    random_info = State()
