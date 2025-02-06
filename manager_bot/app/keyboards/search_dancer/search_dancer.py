@@ -71,6 +71,9 @@ couple_schedule_keyboard = InlineKeyboardMarkup(
             InlineKeyboardButton(text="Pay selected 🎯", callback_data="pay_selected"),
         ],
         [
+            InlineKeyboardButton(text="Cancel selected payment ??️", callback_data="select_cancel"),
+        ],
+        [
             InlineKeyboardButton(
                 text="Manage lessons 📚", callback_data="manage_lessons"
             ),

@@ -11,7 +11,11 @@ class Dancers(StatesGroup):
     available_lessons_to_pay = State()
     lessons_to_pay = State()
 
+    available_lessons_to_cancel = State()
+    lesson_to_cancel = State()
+
     select_lessons = State()
+    cancel_select_lessons = State()
 
     reason = State()
 

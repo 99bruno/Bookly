@@ -215,3 +215,9 @@ async def async_main():
                     await session.execute(insert(Currency).values(name=currency))
 
             await session.commit()
+
+
+if __name__ == "__main__":
+    import asyncio
+
+    asyncio.run(async_main())

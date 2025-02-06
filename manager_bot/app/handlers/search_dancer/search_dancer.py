@@ -211,7 +211,6 @@ async def pay_all(callback_query: types.CallbackQuery, state: FSMContext) -> Non
     try:
         data = await state.get_data()
         lessons = data.get("lessons")
-        print(lessons)
 
         await state.set_state(Dancers.select_lessons)
 
@@ -222,6 +221,73 @@ async def pay_all(callback_query: types.CallbackQuery, state: FSMContext) -> Non
         await callback_query.message.edit_reply_markup(
             reply_markup=create_keyboard_for_lessons(available_lessons_to_pay)
         )
+
+    except Exception as e:
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", callback_query.from_user.id)
+            scope.set_extra("username", callback_query.from_user.username)
+
+        sentry_sdk.capture_exception(e)
+
+
+@router.callback_query(F.data == "select_cancel")
+async def pay_all(callback_query: types.CallbackQuery, state: FSMContext) -> None:
+    try:
+        data = await state.get_data()
+        lessons = data.get("lessons")
+
+        await state.set_state(Dancers.cancel_select_lessons)
+
+        available_lessons_to_cancel = await sort_lessons_payment_cancel(lessons)
+
+        await state.update_data(available_lessons_to_cancel=available_lessons_to_cancel)
+
+        await callback_query.message.edit_reply_markup(
+            reply_markup=create_keyboard_for_lessons(available_lessons_to_cancel)
+        )
+
+    except Exception as e:
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", callback_query.from_user.id)
+            scope.set_extra("username", callback_query.from_user.username)
+
+        sentry_sdk.capture_exception(e)
+
+
+@router.callback_query(Dancers.cancel_select_lessons)
+async def process_number_selection(
+    callback_query: types.CallbackQuery, state: FSMContext
+):
+    try:
+        data = await state.get_data()
+
+        available_lessons = data.get("available_lessons_to_cancel")
+        choose_lessons = data.get("lesson_to_cancel", [])
+
+        if callback_query.data.startswith("lesson_"):
+            lesson = available_lessons[callback_query.data.split("_")[1]]
+
+            if lesson in available_lessons.values():
+                available_lessons.pop(callback_query.data.split("_")[1])
+                choose_lessons.append(int(lesson))
+                await state.update_data(
+                    available_lessons_to_pay=available_lessons,
+                    lessons_to_pay=choose_lessons,
+                )
+
+        if callback_query.data == "confirm_payment_selected":
+            print("confirm_payment_selected")
+            await mark_lessons_as_paid(choose_lessons)
+            await payment(choose_lessons, callback_query.from_user.username)
+            await callback_query.answer(payment_confirmed_message, show_alert=True)
+            await callback_query.message.answer(
+                back_main_menu_message, reply_markup=start_keyboard
+            )
+            await state.clear()
+            return
+
+        keyboard = create_keyboard_for_lessons(available_lessons)
+        await callback_query.message.edit_reply_markup(reply_markup=keyboard)
 
     except Exception as e:
         with sentry_sdk.configure_scope() as scope:
