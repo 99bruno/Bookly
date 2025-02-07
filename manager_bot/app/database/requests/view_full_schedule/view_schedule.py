@@ -58,51 +58,32 @@ async def fetch_lessons_with_full_info():
 
         indexes_1 = ast.literal_eval(schedule)
         indexes_2 = [
-            "07:45-08:30",
-            "08:30-09:15",
-            "09:15-10:00",
-            "10:00-10:45",
-            "11:00-11:45",
-            "11:45-12:30",
-            "12:30-13:15",
-            "13:30-14:15",
-            "14:15-15:00",
-            "15:00-15:45",
-            "16:00-16:45",
-            "16:45-17:30",
-        ]
-        indexes_3 = [
-            "07:45-08:30",
-            "08:30-09:15",
-            "09:15-10:00",
-            "10:00-10:45",
-            "10:45-11:30",
-            "11:30-12:15",
-            "12:15-13:00",
-            "13:00-13:45",
+            "08:00-08:45",
+            "08:45-09:30",
+            "09:30-10:15",
+            "10:15-11:00",
+            "11:15-12:00 (la only)",
+            "12:00-12:45 (la only)",
+            "13:15-14:00",
             "14:00-14:45",
             "14:45-15:30",
-            "15:30-16:15",
-            "16:15-17:00"
+            "15:45-16:30",
+            "16:30-17:15",
+            "17:30-18:15 (st only)",
+            "18:15-19:00 (st only)"
         ]
-        indexes_4 = [
-            "07:45-08:30",
-            "08:30-09:15",
-            "09:15-10:00",
-            "10:00-10:45",
-            "11:00-11:45",
-            "11:45-12:30",
-            "12:30-13:15",
+        indexes_3 = [
+            "08:00-08:45",
+            "08:45-09:30",
+            "09:30-10:15",
+            "10:15-11:00",
+            "11:15-12:00",
+            "12:00-12:45",
+            "12:45-13:30",
             "13:30-14:15",
-            "14:15-15:00",
-            "15:00-15:45",
-            "16:00-16:45",
-            "16:45-17:30",
-            "17:30-18:15",
-            "18:30-19:15",
-            "19:15-20:00",
-            "20:15-21:00",
-            "21:00-21:45"
+            "14:30-15:15",
+            "15:15-16:00",
+            "16:00-16:45"
         ]
 
         dancers = await session.execute(
@@ -176,6 +157,9 @@ async def fetch_lessons_with_full_info():
     dates_np_15 = np.empty(dates)
     dates_np_15[:] = np.nan
 
+    dates_np_11 = np.empty(11)
+    dates_np_11[:] = np.nan
+
     dates_np_17 = np.empty(17)
     dates_np_17[:] = np.nan
 
@@ -217,47 +201,53 @@ async def fetch_lessons_with_full_info():
                         "Blocked ⚠️",
                         df_test["dancer1_name"] + " & " + df_test["dancer2_name"],
                     )
-                    if date_str == "2024-12-06":
+                    if date_str not in ["2025-03-31", "2025-04-01"]:
                         df_dict[coach] = (
-                            dates_np_12
-                            if df_test["couple"].empty
-                            else df_test["couple"].values
-                        )
-                    elif date_str in ["2024-12-04", "2024-12-05"]:
-                        df_dict[coach] = (
-                            dates_np_17
-                            if df_test["couple"].empty
-                            else df_test["couple"].values
-                        )
-                    elif date_str in dates_error:
-                        df_dict[coach] = (
-                            dates_np_15
+                            dates_np_11
                             if df_test["couple"].empty
                             else df_test["couple"].values
                         )
                     else:
                         df_dict[coach] = (
-                            dates_np_12
+                            dates_np_11
                             if df_test["couple"].empty
                             else df_test["couple"].values
                         )
+                    # elif date_str in ["2024-12-04", "2024-12-05"]:
+                    #     df_dict[coach] = (
+                    #         dates_np_17
+                    #         if df_test["couple"].empty
+                    #         else df_test["couple"].values
+                    #     )
+                    # elif date_str in dates_error:
+                    #     df_dict[coach] = (
+                    #         dates_np_15
+                    #         if df_test["couple"].empty
+                    #         else df_test["couple"].values
+                    #     )
+                    # else:
+                    #     df_dict[coach] = (
+                    #         dates_np_12
+                    #         if df_test["couple"].empty
+                    #         else df_test["couple"].values
+                    #     )
 
                     df_dict[f"{coach.split()[0]} Payment Status"] = [
                         "✅" if paid else "❌" for paid in df_test["paid"].values
                     ]
 
             try:
-                if date_str == "2024-12-06":
-                    pd.DataFrame(df_dict, index=indexes_3).to_excel(
+                if date_str not in ["2025-03-31", "2025-04-01"]:
+                    pd.DataFrame(df_dict, index=indexes_2).to_excel(
                         writer, sheet_name=date_str_dmy
                     )
-                elif date_str in ["2024-12-04", "2024-12-05"]:
-                    pd.DataFrame(df_dict, index=indexes_4).to_excel(
-                        writer, sheet_name=date_str_dmy
-                    )
+                # elif date_str in ["2024-12-04", "2024-12-05"]:
+                #     pd.DataFrame(df_dict, index=indexes_4).to_excel(
+                #         writer, sheet_name=date_str_dmy
+                #     )
                 else:
-                    index = indexes_1 if date_str in dates_error else indexes_2
-                    pd.DataFrame(df_dict, index=index).to_excel(
+                    # index = indexes_1 if date_str in dates_error else indexes_2
+                    pd.DataFrame(df_dict, index=indexes_3).to_excel(
                         writer, sheet_name=date_str_dmy
                     )
             except Exception as e:

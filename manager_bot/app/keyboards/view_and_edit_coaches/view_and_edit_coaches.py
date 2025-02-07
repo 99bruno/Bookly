@@ -11,10 +11,10 @@ from aiogram.types import (
 def coaches_list_keyboard(coaches):
     keyboard = []
     for i in range(0, len(coaches), 2):
-        row = [InlineKeyboardButton(text=f"Coach {i+1}", callback_data=f"coach_{i}")]
+        row = [InlineKeyboardButton(text=f"{coaches[i]["coach"]}", callback_data=f"coach_{i}")]
         if i + 1 < len(coaches):
             row.append(
-                InlineKeyboardButton(text=f"Coach {i+2}", callback_data=f"coach_{i+1}")
+                InlineKeyboardButton(text=f"{coaches[i+1]["coach"]}", callback_data=f"coach_{i+1}")
             )
         keyboard.append(row)
 
