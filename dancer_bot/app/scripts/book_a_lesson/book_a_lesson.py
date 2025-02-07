@@ -9,8 +9,8 @@ def format_couple(couples):
     return [f"• Пара {idx+1}: " + couple for idx, couple in enumerate(couples)]
 
 
-def format_lesson_info(lesson_info: dict, template: str) -> str:
+def format_lesson_info(coach_name: str, lesson_info: dict, template: str) -> str:
     dates = "\n".join(lesson_info["dates"])
     total_sum = lesson_info["total_sum"]
 
-    return template.format(dates, total_sum)
+    return template.format(coach_name, dates, total_sum)
