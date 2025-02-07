@@ -215,10 +215,15 @@ async def handle_coach_selection(
         await state.update_data(booked_lessons_count=booked_lessons_count)
         await state.set_state(LessonRegistration.selected_dates)
 
-        await callback_query.message.answer_photo(
-            photo=FSInputFile("app/database/Unknown.jpeg"),
+        # await callback_query.message.answer_photo(
+        #     photo=FSInputFile("app/database/Unknown.jpeg"),
+        #     reply_markup=create_keyboard_for_dates(list(dates.keys())),
+        #     caption="Яка дата тебе цікавить? ",
+        # )
+
+        await callback_query.message.answer(
+            "Яка дата тебе цікавить?",
             reply_markup=create_keyboard_for_dates(list(dates.keys())),
-            caption="Яка дата тебе цікавить? ",
         )
     except Exception as e:
         with sentry_sdk.configure_scope() as scope:
@@ -248,8 +253,8 @@ async def process_number_selection(
 
             await state.update_data(current_date=date)
 
-            await callback_query.message.edit_caption(
-                caption="Тепер обери зручний для тебе час 🤩"
+            await callback_query.message.edit_text(
+                text="Тепер обери зручний для тебе час 🤩"
                 "Ти можеш обрати одразу кілька занять,"
                 " клікнувши на декілька кнопок.\n\n"
                 "<b>ЗВЕРНИ УВАГУ</b> 👇\n\n"
@@ -285,15 +290,15 @@ async def process_number_selection(
         if callback_query.data == "return_to_dates":
             keyboard = create_keyboard_for_dates(available_dates)
 
-            await callback_query.message.edit_caption(caption="Яка дата тебе цікавить?")
+            await callback_query.message.edit_text(text="Яка дата тебе цікавить?")
             await callback_query.message.edit_reply_markup(reply_markup=keyboard)
 
         if callback_query.data == "book_lesson":
             await state.update_data(selected_dates=choose_dates)
             data_of_lessons = await get_lessons_info(choose_dates)
 
-            await callback_query.message.edit_caption(
-                caption=format_lesson_info(
+            await callback_query.message.edit_text(
+                text=format_lesson_info(
                     data_of_lessons, confirm_book_lessons_message
                 )
             )
