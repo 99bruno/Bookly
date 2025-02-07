@@ -6,4 +6,5 @@
 /manager_bot/schedule.xlsx
 **/__pycache__/
 **/__pycache__/*
+*/__
 db.sqlite3
