@@ -130,6 +130,15 @@ class Coach(Base):
     )
 
 
+async def get_coach_by_id(coach_id: int):
+    async with async_session() as session:
+        coach = await session.scalar(select(Coach).where(Coach.id == coach_id))
+        if coach:
+            return coach.full_name
+        else:
+            return False
+
+
 class Currency(Base):
     __tablename__ = "currencies"
 

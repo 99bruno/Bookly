@@ -19,6 +19,8 @@ from app.states.book_a_lesson.register_dancer import UserRegistration
 from app.templates.book_a_lesson.book_a_lesson import *
 from sentry_logging.sentry_setup import sentry_sdk
 
+from app.database.models import get_coach_by_id
+
 router = Router()
 
 
@@ -298,7 +300,7 @@ async def process_number_selection(
             data_of_lessons = await get_lessons_info(choose_dates)
 
             await callback_query.message.edit_text(
-                text=format_lesson_info(
+                text=format_lesson_info(await get_coach_by_id(data["coach_id"]),
                     data_of_lessons, confirm_book_lessons_message
                 )
             )
