@@ -32,6 +32,7 @@ def coach_unpack_info_for_edit(coach_info, coach_info_message):
 
 def coach_view_schedule_unpack(lessons: list, template: str):
     return template.format(
+        lessons[-1],
         lessons[0],
         "\n".join(
             [

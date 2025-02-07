@@ -8,6 +8,6 @@ coaches_list_message = (
 coach_info_message = "Coach:\n\n{0}"
 
 coach_view_schedule_message = (
-    "<b>Schedule for {0}:</b>\n\n{1}\n\n"
+    "<b>{0} Schedule for {1}:</b>\n\n{2}\n\n"
     '<i><b>Unpaid classes are marked with "❌", and paid classes are marked with " ✅"</b></i>'
 )

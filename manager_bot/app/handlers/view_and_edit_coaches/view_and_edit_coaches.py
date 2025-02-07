@@ -527,7 +527,7 @@ async def callback_view_schedule_handler(
 
             await callback_query.message.edit_text(
                 coach_view_schedule_unpack(
-                    [callback_query.data.split("_")[-1], schedule_info],
+                    [callback_query.data.split("_")[-1], schedule_info, data["coaches_info"][data["current_coach"]]["coach"]],
                     coach_view_schedule_message,
                 )
             )
