@@ -34,6 +34,52 @@ from sentry_logging.sentry_setup import sentry_sdk
 router = Router()
 
 
+@router.callback_query(F.data == "view_schedule")
+async def command_book_a_lesson_handler(
+    message: types.CallbackQuery, state: FSMContext
+) -> None:
+    try:
+        await state.clear()
+
+        user_info = await check_user_registered(message.from_user.id)
+        if user_info:
+            couple_info = await check_couple_registered(user_info)
+            if couple_info:
+                await state.set_state(Couple.couples)
+                await state.update_data(couples=couple_info)
+
+                couples = concatenate_couples(couple_info)
+
+                await message.message.answer(
+                    format_string(
+                        choose_couple_message, ["\n".join(format_couple(couples))]
+                    ),
+                    reply_markup=create_keyboard_for_choose_couple_for_schedule(
+                        couples
+                    ),
+                )
+
+            else:
+                await message.message.answer(
+                    couple_not_found_in_db_message,
+                    reply_markup=confirm_book_lessons_keyboard,
+                )
+        else:
+            await state.set_state(UserRegistration.phone_number)
+            await message.message.answer(
+                enter_phone_number_message, reply_markup=share_contact_keyboard
+            )
+            await message.message.answer_photo(
+                photo=FSInputFile("app/database/Share_contact.jpeg")
+            )
+
+    except Exception as e:
+        with sentry_sdk.configure_scope() as scope:
+            scope.set_extra("user_id", message.from_user.id)
+            scope.set_extra("username", message.from_user.username)
+
+        sentry_sdk.capture_exception(e)
+
 @router.message(F.text == "Мої бронювання 🕒")
 async def command_book_a_lesson_handler(
     message: types.Message, state: FSMContext

@@ -113,3 +113,12 @@ confirm_book_lessons_keyboard = InlineKeyboardMarkup(
         ],
     ]
 )
+
+
+confirmed_book_lessons_keyboard = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [InlineKeyboardButton(text="Переглянути розклад", callback_data="view_schedule")],
+        [InlineKeyboardButton(text="Забронювати ще урок", callback_data="book_lessons")],
+        [InlineKeyboardButton(text="Повернутись в головне меню", callback_data="back_to_main_menu")],
+    ]
+)
