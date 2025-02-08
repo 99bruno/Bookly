@@ -139,6 +139,17 @@ async def mark_lessons_as_paid(booked_lesson_ids: list[int]) -> None:
             await session.commit()
 
 
+async def mark_lessons_as_unpaid(booked_lesson_ids: list[int]) -> None:
+    async with async_session() as session:
+        async with session.begin():
+            await session.execute(
+                update(BookedLesson)
+                .where(BookedLesson.id.in_(booked_lesson_ids))
+                .values(paid=False)
+            )
+            await session.commit()
+
+
 async def payment(booked_lesson_ids: list[int], manager: str) -> None:
     async with async_session() as session:
         Dancer1 = aliased(Dancer, name="Dancer1")

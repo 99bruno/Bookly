@@ -265,21 +265,20 @@ async def process_number_selection(
         choose_lessons = data.get("lesson_to_cancel", [])
 
         if callback_query.data.startswith("lesson_"):
-            lesson = available_lessons[callback_query.data.split("_")[1]]
+            lesson = available_lessons[callback_query.data.split("_")[-1]]
+
 
             if lesson in available_lessons.values():
                 available_lessons.pop(callback_query.data.split("_")[1])
                 choose_lessons.append(int(lesson))
                 await state.update_data(
-                    available_lessons_to_pay=available_lessons,
-                    lessons_to_pay=choose_lessons,
+                    available_lessons_to_cancel=available_lessons,
+                    lesson_to_cancel=choose_lessons,
                 )
 
         if callback_query.data == "confirm_payment_selected":
-            print("confirm_payment_selected")
-            await mark_lessons_as_paid(choose_lessons)
-            await payment(choose_lessons, callback_query.from_user.username)
-            await callback_query.answer(payment_confirmed_message, show_alert=True)
+            await mark_lessons_as_unpaid(choose_lessons)
+            await callback_query.answer("Lessons unpaid", show_alert=True)
             await callback_query.message.answer(
                 back_main_menu_message, reply_markup=start_keyboard
             )
@@ -668,3 +667,8 @@ async def handle_reschedule_lesson(
             scope.set_extra("username", callback_query.from_user.username)
 
         sentry_sdk.capture_exception(e)
+
+
+@router.callback_query(F.data == "manage_couple")
+async def manage_couple(callback_query: types.CallbackQuery, state: FSMContext) -> None:
+    await callback_query.answer("Sorry it's not working now(", show_alert=True)
