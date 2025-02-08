@@ -339,9 +339,10 @@ async def command_book_lessons_handler(
                 show_alert=True,
             )
 
-        await callback_query.message.answer(
-            confirmed_book_lessons_message, reply_markup=start_keyboard
+        await callback_query.message.edit_text(
+            confirmed_book_lessons_message
         )
+        await callback_query.message.edit_reply_markup(reply_markup=confirmed_book_lessons_keyboard)
 
     except Exception as e:
         with sentry_sdk.configure_scope() as scope:
