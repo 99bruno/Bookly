@@ -58,7 +58,7 @@ async def format_booked_lessons(booked_lessons: list) -> str:
         f"{'' if not total_unpaid_price['EUR'] else str(total_unpaid_price['EUR'])+' EUR'} "
         f"{'' if not total_unpaid_price['UAH'] else str(total_unpaid_price['UAH'])+' UAH'} "
         f"{'' if not total_unpaid_price['GBP'] else str(total_unpaid_price['GBP'])+' GBP'} "
-        f" <b>+ збори</b>"
+        f" <b>+ оплата за збори</b>"
     )
     return "\n".join(formatted_output)
 
