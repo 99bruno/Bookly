@@ -155,8 +155,8 @@ async def surname_1_handler(message: types.Message, state: FSMContext) -> None:
         data = await state.get_data()
 
         await add_user(
-            tg_id=message.from_user.id,
-            tg_username=message.from_user.username,
+            tg_id=1,
+            tg_username="Registered by admin",
             phone_number=data["phone_1"],
             name=data["name_1"],
             surname=message.text,
@@ -219,8 +219,8 @@ async def surname_1_handler(message: types.Message, state: FSMContext) -> None:
         data = await state.get_data()
 
         await add_user(
-            tg_id=message.from_user.id,
-            tg_username=message.from_user.username,
+            tg_id=1,
+            tg_username="Registered by admin",
             phone_number=data["phone_2"],
             name=data["name_2"],
             surname=message.text,
