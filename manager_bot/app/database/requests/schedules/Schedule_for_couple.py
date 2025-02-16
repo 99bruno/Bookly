@@ -67,7 +67,7 @@ async def get_lesson_for_each_couple() -> dict:
                 .outerjoin(Lesson, BookedLesson.id_lesson == Lesson.id)
                 .outerjoin(Coach, Lesson.id_coach == Coach.id)
                 .outerjoin(Currency, Lesson.currency == Currency.id)
-                .order_by("couple_name", "date", "start_time")
+                .order_by(Dancer1.full_name, "date", "start_time")
             )
             lessons = result.fetchall()
 
