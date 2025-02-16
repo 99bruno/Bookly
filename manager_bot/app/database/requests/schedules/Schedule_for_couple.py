@@ -105,10 +105,10 @@ async def get_lesson_for_each_couple() -> dict:
                     y_position -= 20
 
                 c.setFont("Helvetica", 12)
-                if lesson[9]:
-                    c.setFillColor(colors.green)
-                else:
-                    c.setFillColor(colors.red)
+                # if lesson[9]:
+                #     c.setFillColor(colors.green)
+                # else:
+                #     c.setFillColor(colors.red)
                 money[lesson[8]] += lesson[7]
                 c.drawString(20 * mm, y_position, f"• {lesson[3].strftime('%H:%M')}-{lesson[4].strftime('%H:%M')} | {lesson[6]} | {lesson[7]} {lesson[8]}")
                 y_position -= 15
@@ -124,82 +124,7 @@ async def get_lesson_for_each_couple() -> dict:
                                                   f"{'' if not money['GBP'] else str(money['GBP']) + ' GBP'} ")
 
             c.save()
-            # Dancer1 = aliased(Dancer, name="Dancer1")
-            # Dancer2 = aliased(Dancer, name="Dancer2")
-            # result = await session.execute(
-            #     select(Coach.id, Coach.full_name, Coach.dates, Coach.program).order_by(Coach.full_name)
-            # )
-            # camp = await session.execute(select(Event.name))
-            # camp = camp.scalar_one_or_none()
-            #
-            # coaches = result.fetchall()
-            # text = f"Coach Schedule for {camp.strip()}"
-            # draw_centered_text(c, text, y_position - 40, width, 50)
-            # y_position -= 120
-            #
-            # for line in [f"{idx+1}. {coach[1]}" for idx, coach in enumerate(coaches)]:
-            #     c.setFont("Helvetica", 12)
-            #     c.setFillColor(colors.black)
-            #     c.drawString(10 * mm, y_position, line)
-            #     y_position -= 15
-            #
-            #     if y_position < 50:
-            #         c.showPage()
-            #         y_position = height - 20
-            #
-            # if y_position != height - 20:
-            #     c.showPage()
-            #     y_position = height - 20
-            #
-            # for coach in coaches:
-            #     text = f"{coach[1]}"
-            #     draw_centered_text(c, text, y_position - 20, width, 30)
-            #     y_position -= 60
-            #     for date in ast.literal_eval(coach[2]):
-            #         date_obj = datetime.strptime(date, "%d.%m.%Y").strftime("%Y-%m-%d")
-            #         print(coach[1], date_obj)
-            #
-            #         result = await session.execute(
-            #             select(Lesson.available, Lesson.start_time, Lesson.end_time, BookedLesson.paid,
-            #                    Dancer1.full_name.label("dancer1_name"), Dancer2.full_name.label("dancer2_name")
-            #                    )
-            #             .outerjoin(BookedLesson, Lesson.id == BookedLesson.id_lesson)
-            #             .outerjoin(Couple, BookedLesson.id_couple == Couple.id)
-            #             .outerjoin(Dancer1, Couple.id_dancer1 == Dancer1.id)
-            #             .outerjoin(Dancer2, Couple.id_dancer2 == Dancer2.id)
-            #             .where(
-            #                 and_(Lesson.date == date_obj, Lesson.id_coach == coach[0])
-            #             )
-            #         )
-            #         lessons = result.fetchall()
-            #
-            #         lesson_string = text_format.format(
-            #             "\n".join(
-            #                 [(f"• {lesson[1].strftime('%H:%M')}-{lesson[2].strftime('%H:%M')}: "
-            #                   f"{f'{lesson[4]} & {lesson[5]}' if lesson[0] == False and lesson[4]
-            #                                                      is not None else '! Blocked !' if lesson[0] == False and lesson[4]
-            #                                                                                        is None else
-            #                   ''}"
-            #                   )
-            #                  for lesson in lessons]))
-            #         c.setFont("Helvetica-Bold", 12)
-            #         c.drawString(20 * mm, y_position, f"{coach[1]} Schedule for {date}:")
-            #         y_position -= 5
-            #         for line in lesson_string.split("\n"):
-            #             c.setFont("Helvetica", 12)
-            #             c.setFillColor(colors.black)
-            #             if "! Blocked !" in line:
-            #                 c.setFillColor(colors.red)
-            #             c.drawString(20 * mm, y_position, line)
-            #             y_position -= 15
-            #
-            #             if y_position < 50:  # Prevent writing beyond the page
-            #                 c.showPage()
-            #                 y_position = height - 20
-            #     c.showPage()
-            #     y_position = height - 20
-            #
-            # c.save()
+
     except Exception as e:
         print(e)
 
