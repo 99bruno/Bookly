@@ -58,7 +58,7 @@ async def command_view_full_schedule_handler(
         await get_lesson_for_each_couple()
 
         await message.answer_document(
-            FSInputFile("app/database/schedule.xlsx"), caption=view_schedule_message
+            FSInputFile("app/database/couple_schedule.pdf"), caption="Here is the couple Schedule"
         )
 
     except Exception as e:
