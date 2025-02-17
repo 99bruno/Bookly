@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from app.database.models import (
     BookedLesson,
     Coach,
@@ -5,8 +7,12 @@ from app.database.models import (
     Dancer,
     Lesson,
     async_session,
+    Event
 )
 from sqlalchemy import func, outerjoin, select
+
+
+
 
 
 async def get_all_couples_with_dancers():
