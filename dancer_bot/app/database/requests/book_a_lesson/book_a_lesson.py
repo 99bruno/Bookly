@@ -24,6 +24,7 @@ async def get_coaches_by_program(program_type: str):
                 "coach_firstname": coach.firstname,
                 "coach_lastname": coach.lastname,
                 "price": coach.price,
+                "currency": currency[coach.currency - 1],
                 "coach_dates": coach.dates,
             }
             for coach in coaches
