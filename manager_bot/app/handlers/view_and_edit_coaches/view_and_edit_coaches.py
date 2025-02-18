@@ -89,7 +89,7 @@ async def callback_coach_info_handler(
         coach_info = data["coaches_info"][coach_number]
 
         await callback_query.message.edit_text(
-            coach_unpack_info(coach_info, coach_info_message)
+            coach_unpack_info_for_edit(coach_info, coach_info_message)
         )
         await callback_query.message.edit_reply_markup(reply_markup=coach_info_keyboard)
 

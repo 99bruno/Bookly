@@ -54,7 +54,7 @@ def create_keyboard_for_coaches(coaches: list, couple_id: int):
     keyboard = []
     for coach in coaches:
         button = InlineKeyboardButton(
-            text=f"{coach['coach_firstname']} {coach['coach_lastname']}",
+            text=f"{coach['coach_firstname']} {coach['coach_lastname']} - {coach['price']} {coach['currency']}",
             callback_data=f"coach_{coach['coach_id']}",
         )
         keyboard.append([button])
