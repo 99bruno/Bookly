@@ -209,7 +209,7 @@ async def fetch_lessons_with_full_info():
                         )
                     else:
                         df_dict[coach] = (
-                            dates_np_11
+                            dates_np_15
                             if df_test["couple"].empty
                             else df_test["couple"].values
                         )
@@ -238,7 +238,7 @@ async def fetch_lessons_with_full_info():
 
             try:
                 if date_str not in ["2025-03-31", "2025-04-01"]:
-                    pd.DataFrame(df_dict, index=indexes_2).to_excel(
+                    pd.DataFrame(df_dict, index=indexes_1).to_excel(
                         writer, sheet_name=date_str_dmy
                     )
                 # elif date_str in ["2024-12-04", "2024-12-05"]:
