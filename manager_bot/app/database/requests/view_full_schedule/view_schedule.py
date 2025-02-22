@@ -247,7 +247,7 @@ async def fetch_lessons_with_full_info():
                 #     )
                 else:
                     # index = indexes_1 if date_str in dates_error else indexes_2
-                    pd.DataFrame(df_dict, index=indexes_3).to_excel(
+                    pd.DataFrame(df_dict, index=indexes_1).to_excel(
                         writer, sheet_name=date_str_dmy
                     )
             except Exception as e:
