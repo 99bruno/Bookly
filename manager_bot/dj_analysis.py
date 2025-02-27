@@ -25,7 +25,7 @@ dp = Dispatcher()
 
 
 def dj_template(lessons: tuple) -> str:
-    return (f"Hi, Jonathan! "
+    return (f"Hi, Mullyar! "
             f"It is daily update on amount of booked lessons from <b>Pasha</b> and <b>Nastya</b>)\n\n"
             f"Today {lessons[0]}/{lessons[1]-(lessons[2]-lessons[0])} ~ "
             f"{lessons[0]/(lessons[1]-(lessons[2]-lessons[0])) * 100:.1f} % lessons are booked\n\n"
@@ -37,11 +37,14 @@ async def main() -> None:
     try:
         while True:
             info = await get_lessons_counts()
-            for user in [482576057, 377081695]:
-                await bot.send_message(
-                    chat_id=user,
-                    text=dj_template(info),
-                )
+            for user in [482576057, 377081695, 491073857]:
+                try:
+                    await bot.send_message(
+                        chat_id=user,
+                        text=dj_template(info),
+                    )
+                except:
+                    print("Error")
             await asyncio.sleep(86400)
     except:
         print("Error")
