@@ -39,14 +39,19 @@ async def main() -> None:
         try:
             info = await get_lessons_counts()
             for user in [482576057, 377081695, 369345438, 681357425]:
-                await bot.send_message(
-                    chat_id=user,
-                    text=dj_template(info),
-                )
+                try:
+                    await bot.send_message(
+                        chat_id=user,
+                        text=dj_template(info),
+                    )
+                except Exception as e:
+                    print(e)
+
             await asyncio.sleep(86400)
         except:
             print("Error")
-            continue
+
+
 
 
 
