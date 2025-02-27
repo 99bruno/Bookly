@@ -22,7 +22,7 @@ async def fetch_lessons_with_full_info():
     Dancer1 = aliased(Dancer, name="Dancer1")
     Dancer2 = aliased(Dancer, name="Dancer2")
 
-    async with ((async_session() as session)):
+    async with async_session() as session:
         result = await session.execute(
             select(
                 Lesson.id,
