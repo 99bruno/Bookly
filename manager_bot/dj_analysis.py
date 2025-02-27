@@ -34,8 +34,9 @@ def dj_template(lessons: tuple) -> str:
 
 async def main() -> None:
     logger.info("Bot started successfully")
-    try:
-        while True:
+
+    while True:
+        try:
             info = await get_lessons_counts()
             for user in [482576057, 377081695, 369345438, 681357425]:
                 await bot.send_message(
@@ -43,10 +44,11 @@ async def main() -> None:
                     text=dj_template(info),
                 )
             await asyncio.sleep(86400)
-    except:
-        print("Error")
-    finally:
-        await bot.session.close()
+        except:
+            print("Error")
+        finally:
+            await bot.session.close()
+
 
 
 if __name__ == "__main__":
