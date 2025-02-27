@@ -46,6 +46,7 @@ async def main() -> None:
             await asyncio.sleep(86400)
         except:
             print("Error")
+            continue
 
 
 
