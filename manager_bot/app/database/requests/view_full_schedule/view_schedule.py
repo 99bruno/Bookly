@@ -14,7 +14,7 @@ from app.database.models import (
     ScheduleEvent,
     async_session,
 )
-from sqlalchemy import select
+from sqlalchemy import select, union
 from sqlalchemy.orm import aliased
 
 
@@ -22,7 +22,7 @@ async def fetch_lessons_with_full_info():
     Dancer1 = aliased(Dancer, name="Dancer1")
     Dancer2 = aliased(Dancer, name="Dancer2")
 
-    async with async_session() as session:
+    async with ((async_session() as session)):
         result = await session.execute(
             select(
                 Lesson.id,
@@ -86,9 +86,32 @@ async def fetch_lessons_with_full_info():
             "16:00-16:45"
         ]
 
-        dancers = await session.execute(
-            select(Dancer.full_name, Dancer.tg_username, Dancer.phone)
+        query1 = select(
+            Dancer.full_name, Dancer.tg_username, Dancer.phone
+        ).join(
+            Couple, Dancer.id == Couple.id_dancer1
+        ).join(
+            BookedLesson, Couple.id == BookedLesson.id_couple
+        ).where(
+            BookedLesson.id.isnot(None)
         )
+
+        query2 = select(
+            Dancer.full_name, Dancer.tg_username, Dancer.phone
+        ).join(
+            Couple, Dancer.id == Couple.id_dancer12
+        ).join(
+            BookedLesson, Couple.id == BookedLesson.id_couple
+        ).where(
+            BookedLesson.id.isnot(None)
+        )
+
+        combined_query = union(query1, query2)
+
+        combined_query.order_by(Dancer.full_name)
+
+        dancers = await session.execute(combined_query)
+
         dancers = dancers.fetchall()
 
         result = await session.execute(

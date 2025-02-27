@@ -6,8 +6,8 @@ from app.database.models import Coach, Lesson, ScheduleEvent, async_session
 from sqlalchemy import select
 
 currency = [
-    "USD",
     "EUR",
+    "USD",
     "UAH",
     "GBP",
 ]
