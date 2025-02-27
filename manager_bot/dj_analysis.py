@@ -37,7 +37,7 @@ async def main() -> None:
     try:
         while True:
             info = await get_lessons_counts()
-            for user in [482576057, 377081695]:
+            for user in [482576057, 377081695, 369345438, 681357425]:
                 await bot.send_message(
                     chat_id=user,
                     text=dj_template(info),
