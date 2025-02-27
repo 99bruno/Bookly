@@ -85,6 +85,7 @@ async def fetch_lessons_with_full_info():
             "15:15-16:00",
             "16:00-16:45"
         ]
+        print("indexes_1")
 
         query1 = select(
             Dancer.full_name, Dancer.tg_username, Dancer.phone
@@ -95,21 +96,24 @@ async def fetch_lessons_with_full_info():
         ).where(
             BookedLesson.id.isnot(None)
         )
+        print("query234")
 
         query2 = select(
             Dancer.full_name, Dancer.tg_username, Dancer.phone
         ).join(
-            Couple, Dancer.id == Couple.id_dancer12
+            Couple, Dancer.id == Couple.id_dancer2
         ).join(
             BookedLesson, Couple.id == BookedLesson.id_couple
         ).where(
             BookedLesson.id.isnot(None)
         )
+        print("query1", query1)
 
         combined_query = union(query1, query2)
 
-        combined_query.order_by(Dancer.full_name)
 
+        combined_query = combined_query.order_by(Dancer.full_name)
+        print("combined_query", combined_query)
         dancers = await session.execute(combined_query)
 
         dancers = dancers.fetchall()
