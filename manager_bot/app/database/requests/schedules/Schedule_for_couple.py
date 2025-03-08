@@ -60,7 +60,9 @@ async def get_lesson_for_each_couple() -> dict:
             Dancer2 = aliased(Dancer, name="Dancer2")
 
             result = await session.execute(
-                select(BookedLesson.id_couple, (Dancer1.full_name + " & " + Dancer2.full_name).label("couple_name"), Lesson.date.label("date"), Lesson.start_time.label("start_time"), Lesson.end_time, Lesson.program, Coach.full_name, Lesson.price, Currency.name, BookedLesson.paid)
+                select(BookedLesson.id_couple, (Dancer1.full_name + " & " + Dancer2.full_name).label("couple_name"), Lesson.date.label("date"), Lesson.start_time.label("start_time"), Lesson.end_time, Lesson.program, Coach.full_name, Lesson.price, Currency.name, BookedLesson.paid,
+                        (Dancer1.phone).label("dancer1_phone"), (Dancer2.phone).label("dancer2_phone")
+                       )
                 .outerjoin(Couple, BookedLesson.id_couple == Couple.id)
                 .outerjoin(Dancer1, Couple.id_dancer1 == Dancer1.id)
                 .outerjoin(Dancer2, Couple.id_dancer2 == Dancer2.id)
@@ -88,12 +90,12 @@ async def get_lesson_for_each_couple() -> dict:
                                      )
                         c.setFont("Helvetica-Bold", 18)
                         c.line(0, y_position - 30, width * mm, y_position - 30)
-                        c.drawString(10 * mm, y_position - 70, f"{lesson[1].strip()}")
+                        c.drawString(10 * mm, y_position - 70, f"{lesson[1].strip()} - {lesson[10]} & {lesson[11]}")
                         y_position -= 100
 
                     else:
                         c.setFont("Helvetica-Bold", 18)
-                        c.drawString(10 * mm, y_position-10, f"{lesson[1].strip()}")
+                        c.drawString(10 * mm, y_position-10, f"{lesson[1].strip()} - {lesson[10]} & {lesson[11]}")
                         y_position -= 40
                     money = {"USD": 0, "EUR": 0, "UAH": 0, "GBP": 0}
 
