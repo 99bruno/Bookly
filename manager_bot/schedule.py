@@ -33,12 +33,15 @@ async def main() -> None:
         while True:
             await fetch_lessons_with_full_info()
             for admin in await get_admins():
-                await bot.send_document(
-                    chat_id=admin,
-                    document=FSInputFile("app/database/schedule.xlsx"),
-                    caption="Full schedule",
-                    disable_notification=True,
-                )
+                try:
+                    await bot.send_document(
+                        chat_id=admin,
+                        document=FSInputFile("app/database/schedule.xlsx"),
+                        caption="Full schedule",
+                        disable_notification=True,
+                    )
+                except:
+                    print("Error")
 
             await asyncio.sleep(10800)
     finally:

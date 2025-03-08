@@ -3,12 +3,13 @@ import datetime
 
 
 async def analysis_booked_lessons_unpack(lessons: tuple) -> str:
-    return (f"<b>Booked lessons:</b>\n\n"
+    return (f"<b>Bookings:</b>\n"
             f"<blockquote>• {lessons[0]}/{lessons[1]-(lessons[2]-lessons[0])} ~ "
             f"{lessons[0]/(lessons[1]-(lessons[2]-lessons[0])) * 100:.1f}%</blockquote>\n\n"
-            f"<span class='tg-spoiler'>Avaliable lessons: {lessons[3]}\n"
-            f"Blocked lessons: {lessons[2]-lessons[0]}\n</span>"
-            )
+            f"• Total lessons (including blocked): {lessons[1]}\n"
+            f"• Total available lessons on the camp: {lessons[1]-(lessons[2]-lessons[0])}\n"
+            f"• Free lessons for booking: {lessons[1]-(lessons[2]-lessons[0]) - lessons[0] }\n"
+            f"• Blocked  lessons: {lessons[2]-lessons[0]}")
 
 
 async def analysis_coaches_booking_rating_unpack(coaches: list) -> str:
