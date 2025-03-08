@@ -91,13 +91,17 @@ async def get_lesson_for_each_couple() -> dict:
                         c.setFont("Helvetica-Bold", 18)
                         c.line(0, y_position - 30, width * mm, y_position - 30)
                         c.drawString(10 * mm, y_position - 70, f"{lesson[1].strip()}")
+                        c.setFont("Helvetica-Bold", 12)
                         c.drawString(10 * mm, y_position - 90, f"+{lesson[10]} & +{lesson[11]}")
+                        c.setFont("Helvetica-Bold", 18)
                         y_position -= 120
 
                     else:
                         c.setFont("Helvetica-Bold", 18)
-                        c.drawString(10 * mm, y_position-10, f"{lesson[1].strip()} - {lesson[10]} & {lesson[11]}")
+                        c.drawString(10 * mm, y_position-10, f"{lesson[1].strip()}")
+                        c.setFont("Helvetica-Bold", 12)
                         c.drawString(10 * mm, y_position - 30, f"+{lesson[10]} & +{lesson[11]}")
+                        c.setFont("Helvetica-Bold", 18)
                         y_position -= 60
                     money = {"USD": 0, "EUR": 0, "UAH": 0, "GBP": 0}
 
