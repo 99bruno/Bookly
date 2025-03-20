@@ -127,7 +127,7 @@ async def get_lesson_for_each_coach() -> dict:
                                 y_position -= 15
                                 c.drawString(20 * mm, y_position, f"• 18:30-19:00: Latin Lecture")
                                 y_position -= 15
-                            continue
+
                         elif not lesson[6] and lesson[7].strftime("%d-%m") in ["27-03", "28-03", "29-03"] and lesson[1].strftime("%H:%M") in ["11:15", "12:00"]:
                             c.setFillColor(colors.red)
                             if lesson[1].strftime("%H:%M") == "11:15":
@@ -140,7 +140,7 @@ async def get_lesson_for_each_coach() -> dict:
                                 y_position -= 15
                                 c.drawString(20 * mm, y_position, f"• 12:30-13:00: Ballroom Lecture")
                                 y_position -= 15
-                            continue
+
 
                         c.setFont("Helvetica", 12)
                         c.setFillColor(colors.black)
@@ -257,17 +257,32 @@ async def get_lesson_for_each_coach_for_date(date: str) -> None:
                     if lesson[6] and lesson[7].strftime("%d-%m") in ["27-03", "28-03", "29-03"] and lesson[1].strftime(
                             "%H:%M") in ["17:30", "18:15"]:
                         c.setFillColor(colors.red)
-                        c.drawString(20 * mm, y_position,
-                                     f"• {lesson[1].strftime('%H:%M')}-{lesson[2].strftime('%H:%M')}: No Lesson, Latin Lecture")
-                        y_position -= 15
-                        continue
+                        if lesson[1].strftime("%H:%M") == "17:30":
+
+                            c.drawString(20 * mm, y_position, f"• 17:15-17:45: Latin Lecture")
+                            y_position -= 15
+                            c.drawString(20 * mm, y_position, f"• 17:45-18:15: Latin Lecture")
+                            y_position -= 15
+                        else:
+                            c.drawString(20 * mm, y_position, f"• 18:00-18:30: Latin Lecture")
+                            y_position -= 15
+                            c.drawString(20 * mm, y_position, f"• 18:30-19:00: Latin Lecture")
+                            y_position -= 15
+
                     elif not lesson[6] and lesson[7].strftime("%d-%m") in ["27-03", "28-03", "29-03"] and lesson[
                         1].strftime("%H:%M") in ["11:15", "12:00"]:
                         c.setFillColor(colors.red)
-                        c.drawString(20 * mm, y_position,
-                                     f"• {lesson[1].strftime('%H:%M')}-{lesson[2].strftime('%H:%M')}: No Lesson, Ballroom Lecture")
-                        y_position -= 15
-                        continue
+                        if lesson[1].strftime("%H:%M") == "11:15":
+                            c.drawString(20 * mm, y_position, f"• 11:00-11:30: Ballroom Lecture")
+                            y_position -= 15
+                            c.drawString(20 * mm, y_position, f"• 11:30-12:00: Ballroom Lecture")
+                            y_position -= 15
+                        else:
+                            c.drawString(20 * mm, y_position, f"• 12:00-12:30: Ballroom Lecture")
+                            y_position -= 15
+                            c.drawString(20 * mm, y_position, f"• 12:30-13:00: Ballroom Lecture")
+                            y_position -= 15
+
 
                     c.setFont("Helvetica", 12)
                     c.setFillColor(colors.black)
