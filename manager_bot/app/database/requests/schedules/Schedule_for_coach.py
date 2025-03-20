@@ -127,7 +127,7 @@ async def get_lesson_for_each_coach() -> dict:
                                 y_position -= 15
                                 c.drawString(20 * mm, y_position, f"• 18:30-19:00: Latin Lecture")
                                 y_position -= 15
-
+                            continue
                         elif not lesson[6] and lesson[7].strftime("%d-%m") in ["27-03", "28-03", "29-03"] and lesson[1].strftime("%H:%M") in ["11:15", "12:00"]:
                             c.setFillColor(colors.red)
                             if lesson[1].strftime("%H:%M") == "11:15":
@@ -140,7 +140,7 @@ async def get_lesson_for_each_coach() -> dict:
                                 y_position -= 15
                                 c.drawString(20 * mm, y_position, f"• 12:30-13:00: Ballroom Lecture")
                                 y_position -= 15
-
+                            continue
 
                         c.setFont("Helvetica", 12)
                         c.setFillColor(colors.black)
@@ -268,7 +268,7 @@ async def get_lesson_for_each_coach_for_date(date: str) -> None:
                             y_position -= 15
                             c.drawString(20 * mm, y_position, f"• 18:30-19:00: Latin Lecture")
                             y_position -= 15
-
+                        continue
                     elif not lesson[6] and lesson[7].strftime("%d-%m") in ["27-03", "28-03", "29-03"] and lesson[
                         1].strftime("%H:%M") in ["11:15", "12:00"]:
                         c.setFillColor(colors.red)
@@ -282,7 +282,7 @@ async def get_lesson_for_each_coach_for_date(date: str) -> None:
                             y_position -= 15
                             c.drawString(20 * mm, y_position, f"• 12:30-13:00: Ballroom Lecture")
                             y_position -= 15
-
+                        continue
 
                     c.setFont("Helvetica", 12)
                     c.setFillColor(colors.black)
