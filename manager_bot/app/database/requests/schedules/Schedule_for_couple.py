@@ -79,6 +79,7 @@ async def get_lesson_for_each_couple() -> dict:
 
             for idx, lesson in enumerate(lessons):
                 if lesson[0] != id_couple:
+                    checker = True
                     c.setFillColor(colors.black)
                     id_couple = lesson[0]
                     if idx != 0:
@@ -105,8 +106,15 @@ async def get_lesson_for_each_couple() -> dict:
                         y_position -= 60
                     money = {"USD": 0, "EUR": 0, "UAH": 0, "GBP": 0}
 
-                if lesson[2] != current_date:
+                if lesson[2] != current_date :
+                    checker = False
                     current_date = lesson[2]
+                    c.setFont("Helvetica-Bold", 12)
+                    c.setFillColor(colors.black)
+                    c.drawString(15 * mm, y_position, f"{lesson[2].strftime('%d-%m-%Y')}")
+                    y_position -= 20
+                elif lesson[2] == current_date and id_couple == lesson[0] and checker:
+                    checker = False
                     c.setFont("Helvetica-Bold", 12)
                     c.setFillColor(colors.black)
                     c.drawString(15 * mm, y_position, f"{lesson[2].strftime('%d-%m-%Y')}")

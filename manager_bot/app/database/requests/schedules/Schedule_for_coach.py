@@ -104,21 +104,27 @@ async def get_lesson_for_each_coach() -> dict:
                         "\n".join(
                             [(f"• {lesson[1].strftime('%H:%M')}-{lesson[2].strftime('%H:%M')}: "
                               f"{f'{lesson[4]} & {lesson[5]}' if lesson[0] == False and lesson[4]
-                                                                 is not None else '! Blocked !' if lesson[0] == False and lesson[4]
+                                                                 is not None else 'No lesson' if lesson[0] == False and lesson[4]
                                                                                                    is None else
                               ''}"
                               )
                              for lesson in lessons]))
                     c.setFont("Helvetica-Bold", 12)
+                    c.setFillColor(colors.black)
                     c.drawString(20 * mm, y_position, f"{coach[1]} Schedule for {date}:")
                     y_position -= 5
-                    for line in lesson_string.split("\n"):
+                    for line, lesson, idx in zip(lesson_string.split("\n"), lessons, range(len(lessons))):
                         c.setFont("Helvetica", 12)
                         c.setFillColor(colors.black)
-                        if "! Blocked !" in line:
-                            c.setFillColor(colors.red)
+                        if "No lesson" in line:
+                            c.setFillColor(colors.blue)
                         c.drawString(20 * mm, y_position, line)
                         y_position -= 15
+
+                        if lesson[1] != lessons[idx - 1][2] and idx != 0:
+                            c.setFillColor(colors.blue)
+                            c.drawString(20 * mm, y_position, f"• {lessons[idx-1][2].strftime('%H:%M')}-{lesson[1].strftime('%H:%M')}: Break")
+                            y_position -= 15
 
                         if y_position < 50:  # Prevent writing beyond the page
                             c.showPage()
@@ -203,7 +209,7 @@ async def get_lesson_for_each_coach_for_date(date: str) -> None:
                         
                         strftime('%H:%M')}: "
                           f"{f'{lesson[4]} & {lesson[5]}' if lesson[0] == False and lesson[4]
-                                                             is not None else '! Blocked !' if lesson[0] == False and lesson[4]
+                                                             is not None else 'No lesson' if lesson[0] == False and lesson[4]
                                                                                                is None else
                           ''}"
                           )
@@ -217,13 +223,21 @@ async def get_lesson_for_each_coach_for_date(date: str) -> None:
 
                 y_position -= 5
 
-                for line in lesson_string.split("\n"):
+                for line, lesson, idx in zip(lesson_string.split("\n"), lessons, range(len(lessons))):
+
+
                     c.setFont("Helvetica", 12)
                     c.setFillColor(colors.black)
-                    if "! Blocked !" in line:
-                        c.setFillColor(colors.red)
+                    if "No lesson" in line:
+                        c.setFillColor(colors.blue)
+                    line.split(" & ")
                     c.drawString(20 * mm, y_position, line)
                     y_position -= 15
+
+                    if lesson[1] != lessons[idx-1][2] and idx != 0:
+                        c.setFillColor(colors.blue)
+                        c.drawString(20 * mm, y_position, f"• {lessons[idx-1][2].strftime('%H:%M')}-{lesson[1].strftime('%H:%M')}: Break")
+                        y_position -= 15
 
                     if y_position < 50:
                         c.showPage()
