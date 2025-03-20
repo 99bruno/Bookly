@@ -148,9 +148,14 @@ async def get_lesson_for_each_coach() -> dict:
 
                         if idx != 0 and lesson[1] != lessons[idx - 1][2]:
                             c.setFillColor(colors.green)
-                            c.drawString(20 * mm, y_position,
-                                         f"• {round((lesson[1] - lessons[idx - 1][2]).total_seconds() / 60)} min Break")
-                            y_position -= 15
+                            if lesson[1].strftime("%H:%M") == "13:15":
+                                c.drawString(20 * mm, y_position,
+                                             f"• 15 min Break")
+                                y_position -= 15
+                            else:
+                                c.drawString(20 * mm, y_position,
+                                             f"• {round((lesson[1] - lessons[idx - 1][2]).total_seconds() / 60)} min Break")
+                                y_position -= 15
 
                         c.setFillColor(colors.black)
                         if "No lesson" in line:
