@@ -146,7 +146,6 @@ async def get_lesson_for_each_coach() -> dict:
 
                         c.setFont("Helvetica", 12)
 
-
                         if idx != 0 and lesson[1] != lessons[idx - 1][2]:
                             c.setFillColor(colors.green)
                             c.drawString(20 * mm, y_position,
@@ -257,7 +256,7 @@ async def get_lesson_for_each_coach_for_date(date: str) -> None:
 
                 y_position -= 5
 
-                for line, lesson, idx in zip(lesson_string.split("\n"), lessons, range(len(lessons))):
+                for line, lesson, idx in zip(lesson_string.split("\n")[:1], lessons, range(len(lessons))):
                     if lesson[6] and lesson[7].strftime("%d-%m") in ["27-03", "28-03", "29-03"] and lesson[1].strftime(
                             "%H:%M") in ["17:30", "18:15"]:
                         c.setFillColor(colors.red)
@@ -290,17 +289,19 @@ async def get_lesson_for_each_coach_for_date(date: str) -> None:
                         continue
 
                     c.setFont("Helvetica", 12)
+
+
+                    if lesson[1] != lessons[idx-1][2] and idx != 0:
+                        c.setFillColor(colors.green)
+                        c.drawString(20 * mm, y_position, f"• {round((lesson[1] - lessons[idx-1][2]).total_seconds() / 60)} min Break")
+                        y_position -= 15
+
                     c.setFillColor(colors.black)
                     if "No lesson" in line:
                         c.setFillColor(colors.blue)
                     line.split(" & ")
                     c.drawString(20 * mm, y_position, line)
                     y_position -= 15
-
-                    if lesson[1] != lessons[idx-1][2] and idx != 0:
-                        c.setFillColor(colors.green)
-                        c.drawString(20 * mm, y_position, f"• {round((lesson[1] - lessons[idx-1][2]).total_seconds() / 60)} min Break")
-                        y_position -= 15
 
                     if y_position < 50:
                         c.showPage()
