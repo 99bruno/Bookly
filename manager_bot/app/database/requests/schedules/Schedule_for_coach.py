@@ -114,7 +114,6 @@ async def get_lesson_for_each_coach() -> dict:
                     c.drawString(20 * mm, y_position, f"{coach[1]} Schedule for {date}:")
                     y_position -= 5
                     for line, lesson, idx in zip(lesson_string.split("\n"), lessons, range(len(lessons))):
-                        print(lesson[6], lesson[7].strftime("%d-%m"), lesson[1].strftime("%H:%M"))
                         if lesson[6] and lesson[7].strftime("%d-%m") in ["27-03", "28-03", "29-03"] and lesson[1].strftime("%H:%M") in ["17:30", "18:15"]:
                             c.setFillColor(colors.red)
                             c.drawString(20 * mm, y_position, f"• {lesson[1].strftime('%H:%M')}-{lesson[2].strftime('%H:%M')}: No Lesson, Latin Lecture")
@@ -147,7 +146,7 @@ async def get_lesson_for_each_coach() -> dict:
 
             c.save()
     except Exception as e:
-        print(e)
+        print("Error", e)
 
 
 text_format = """
@@ -204,7 +203,8 @@ async def get_lesson_for_each_coach_for_date(date: str) -> None:
 
                 result = await session.execute(
                     select(Lesson.available, Lesson.start_time, Lesson.end_time, BookedLesson.paid,
-                           Dancer1.full_name.label("dancer1_name"), Dancer2.full_name.label("dancer2_name"), Lesson.program, Lesson.date
+                           Dancer1.full_name.label("dancer1_name"), Dancer2.full_name.label("dancer2_name"),
+                           Lesson.program, Lesson.date
                            )
                     .outerjoin(BookedLesson, Lesson.id == BookedLesson.id_lesson)
                     .outerjoin(Couple, BookedLesson.id_couple == Couple.id)
@@ -244,7 +244,7 @@ async def get_lesson_for_each_coach_for_date(date: str) -> None:
                                      f"• {lesson[1].strftime('%H:%M')}-{lesson[2].strftime('%H:%M')}: No Lesson, Latin Lecture")
                         y_position -= 15
                         continue
-                    elif lesson[6] and lesson[7].strftime("%d-%m") in ["27-03", "28-03", "29-03"] and lesson[
+                    elif not lesson[6] and lesson[7].strftime("%d-%m") in ["27-03", "28-03", "29-03"] and lesson[
                         1].strftime("%H:%M") in ["11:15", "12:00"]:
                         c.setFillColor(colors.red)
                         c.drawString(20 * mm, y_position,
