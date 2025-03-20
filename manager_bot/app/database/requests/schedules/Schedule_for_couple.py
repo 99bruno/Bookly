@@ -105,6 +105,7 @@ async def get_lesson_for_each_couple() -> dict:
                         if y_position < 50:
                             c.showPage()
                             y_position = height - 20
+                        c.setFont("Helvetica-Bold", 18)
                         c.drawString(10 * mm, y_position, f"{lesson[1].strip()}")
                         y_position -= 20
                         c.setFont("Helvetica-Bold", 12)
