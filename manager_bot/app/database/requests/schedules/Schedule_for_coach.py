@@ -254,9 +254,9 @@ async def get_lesson_for_each_coach_for_date(date: str) -> None:
                 c.drawString(20 * mm, y_position, f"{coach[1]} Schedule for {date}:")
 
 
-                y_position -= 5
+                y_position -= 20
 
-                for line, lesson, idx in zip(lesson_string.split("\n")[:1], lessons, range(len(lessons))):
+                for line, lesson, idx in zip(lesson_string.split("\n"), lessons, range(len(lessons))):
                     if lesson[6] and lesson[7].strftime("%d-%m") in ["27-03", "28-03", "29-03"] and lesson[1].strftime(
                             "%H:%M") in ["17:30", "18:15"]:
                         c.setFillColor(colors.red)
