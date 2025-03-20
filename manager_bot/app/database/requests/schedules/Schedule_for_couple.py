@@ -36,6 +36,7 @@ def draw_centered_text(c, text, y_position, max_width, initial_font_size, font_n
         text_width = c.stringWidth(text, font_name, font_size)
 
     c.setFont(font_name, font_size)
+
     c.drawString((max_width - text_width) / 2, y_position, text)
 
 
@@ -96,18 +97,23 @@ async def get_lesson_for_each_couple() -> dict:
                                                           f"{'' if not money['GBP'] else str(money['GBP']) + ' GBP'} "
                                      )
                         c.setFont("Helvetica-Bold", 18)
-                        c.line(0, y_position - 30, width * mm, y_position - 30)
                         if y_position < 50:
                             c.showPage()
                             y_position = height - 20
-                        c.drawString(10 * mm, y_position - 70, f"{lesson[1].strip()}")
+                        c.line(0, y_position - 30, width * mm, y_position - 30)
+                        y_position -= 70
+                        if y_position < 50:
+                            c.showPage()
+                            y_position = height - 20
+                        c.drawString(10 * mm, y_position, f"{lesson[1].strip()}")
+                        y_position -= 20
                         c.setFont("Helvetica-Bold", 12)
                         if y_position < 50:
                             c.showPage()
                             y_position = height - 20
-                        c.drawString(10 * mm, y_position - 90, f"+{lesson[10]} & +{lesson[11]}")
+                        c.drawString(10 * mm, y_position, f"+{lesson[10]} & +{lesson[11]}")
                         c.setFont("Helvetica-Bold", 18)
-                        y_position -= 120
+                        y_position -= 30
 
                     else:
                         c.setFont("Helvetica-Bold", 18)
