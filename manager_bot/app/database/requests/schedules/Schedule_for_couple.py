@@ -86,6 +86,9 @@ async def get_lesson_for_each_couple() -> dict:
                     c.setFillColor(colors.black)
                     id_couple = lesson[0]
                     if idx != 0:
+                        if y_position < 50:
+                            c.showPage()
+                            y_position = height - 20
                         c.drawString(15 * mm, y_position-5, f"Total unpaid price: "
                                                           f"{'' if not money['USD'] else str(money['USD']) + ' USD'} "
                                                           f"{'' if not money['EUR'] else str(money['EUR']) + ' EUR'} "
@@ -94,16 +97,28 @@ async def get_lesson_for_each_couple() -> dict:
                                      )
                         c.setFont("Helvetica-Bold", 18)
                         c.line(0, y_position - 30, width * mm, y_position - 30)
+                        if y_position < 50:
+                            c.showPage()
+                            y_position = height - 20
                         c.drawString(10 * mm, y_position - 70, f"{lesson[1].strip()}")
                         c.setFont("Helvetica-Bold", 12)
+                        if y_position < 50:
+                            c.showPage()
+                            y_position = height - 20
                         c.drawString(10 * mm, y_position - 90, f"+{lesson[10]} & +{lesson[11]}")
                         c.setFont("Helvetica-Bold", 18)
                         y_position -= 120
 
                     else:
                         c.setFont("Helvetica-Bold", 18)
+                        if y_position < 50:
+                            c.showPage()
+                            y_position = height - 20
                         c.drawString(10 * mm, y_position-10, f"{lesson[1].strip()}")
                         c.setFont("Helvetica-Bold", 12)
+                        if y_position < 50:
+                            c.showPage()
+                            y_position = height - 20
                         c.drawString(10 * mm, y_position - 30, f"+{lesson[10]} & +{lesson[11]}")
                         c.setFont("Helvetica-Bold", 18)
                         y_position -= 60
@@ -114,12 +129,18 @@ async def get_lesson_for_each_couple() -> dict:
                     current_date = lesson[2]
                     c.setFont("Helvetica-Bold", 12)
                     c.setFillColor(colors.black)
+                    if y_position < 50:
+                        c.showPage()
+                        y_position = height - 20
                     c.drawString(15 * mm, y_position, f"{lesson[2].strftime('%d-%m-%Y')}")
                     y_position -= 20
                 elif lesson[2] == current_date and id_couple == lesson[0] and checker:
                     checker = False
                     c.setFont("Helvetica-Bold", 12)
                     c.setFillColor(colors.black)
+                    if y_position < 50:
+                        c.showPage()
+                        y_position = height - 20
                     c.drawString(15 * mm, y_position, f"{lesson[2].strftime('%d-%m-%Y')}")
                     y_position -= 20
 
@@ -129,6 +150,9 @@ async def get_lesson_for_each_couple() -> dict:
                 # else:
                 #     c.setFillColor(colors.red)
                 money[lesson[8]] += lesson[7]
+                if y_position < 50:
+                    c.showPage()
+                    y_position = height - 20
                 c.drawString(20 * mm, y_position, f"• {lesson[3].strftime('%H:%M')}-{lesson[4].strftime('%H:%M')} | {lesson[6]} | {lesson[7]} {lesson[8]}")
                 y_position -= 15
                 if y_position < 50:
@@ -136,6 +160,9 @@ async def get_lesson_for_each_couple() -> dict:
                     y_position = height - 20
 
             c.setFillColor(colors.black)
+            if y_position < 50:
+                c.showPage()
+                y_position = height - 20
             c.drawString(15 * mm, y_position - 5, f"Total unpaid price: "
                                                   f"{'' if not money['USD'] else str(money['USD']) + ' USD'} "
                                                   f"{'' if not money['EUR'] else str(money['EUR']) + ' EUR'} "
