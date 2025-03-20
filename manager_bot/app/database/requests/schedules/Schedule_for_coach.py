@@ -112,7 +112,7 @@ async def get_lesson_for_each_coach() -> dict:
                     c.setFont("Helvetica-Bold", 12)
                     c.setFillColor(colors.black)
                     c.drawString(20 * mm, y_position, f"{coach[1]} Schedule for {date}:")
-                    y_position -= 5
+                    y_position -= 20
                     for line, lesson, idx in zip(lesson_string.split("\n")[1:], lessons,
                                                  range(len(lesson_string.split("\n")))):
                         if lesson[6] and lesson[7].strftime("%d-%m") in ["27-03", "28-03", "29-03"] and lesson[
