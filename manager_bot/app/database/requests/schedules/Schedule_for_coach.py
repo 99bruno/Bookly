@@ -135,7 +135,7 @@ async def get_lesson_for_each_coach() -> dict:
                         if lesson[1] != lessons[idx - 1][2] and idx != 0:
                             c.setFillColor(colors.green)
                             c.drawString(20 * mm, y_position,
-                                         f"• {round((lesson[1] - lessons[idx - 1][2]).minutes)} min Break")
+                                         f"• {round((lesson[1] - lessons[idx-1][2]).total_seconds() / 60)} min Break")
                             y_position -= 15
 
                         if y_position < 50:  # Prevent writing beyond the page
@@ -261,7 +261,7 @@ async def get_lesson_for_each_coach_for_date(date: str) -> None:
 
                     if lesson[1] != lessons[idx-1][2] and idx != 0:
                         c.setFillColor(colors.green)
-                        c.drawString(20 * mm, y_position, f"• {round((lesson[1] - lessons[idx-1][2]).minutes)} min Break")
+                        c.drawString(20 * mm, y_position, f"• {round((lesson[1] - lessons[idx-1][2]).total_seconds() / 60)} min Break")
                         y_position -= 15
 
                     if y_position < 50:
