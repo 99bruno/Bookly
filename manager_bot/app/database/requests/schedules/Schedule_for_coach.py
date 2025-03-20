@@ -291,7 +291,7 @@ async def get_lesson_for_each_coach_for_date(date: str) -> None:
 
                     if idx != 0 and lesson[1] != lessons[idx - 1][2]:
                         c.setFillColor(colors.green)
-                        if lessons[idx - 1][2].strftime("%H:%M") == "12:30":
+                        if lesson[1].strftime("%H:%M") == "13:!5":
                             c.drawString(20 * mm, y_position,
                                          f"• 15 min Break")
                             y_position -= 15
