@@ -68,13 +68,18 @@ def create_keyboard_for_coaches(coaches: list, couple_id: int):
 
 def create_keyboard_for_dates(dates: list):
     import datetime
+    try:
+        keyboard = []
+        for idx, date in enumerate(dates):
+            date = datetime.datetime.strptime(date, "%Y-%m-%d")
+            weekday = date.strftime("%A")
+            button = InlineKeyboardButton(text=f"{weekday} {date.strftime("%d-%m")}", callback_data=f"date_{idx}")
+            keyboard.append([button])
 
-    keyboard = []
-    for idx, date in enumerate(dates):
-        button = InlineKeyboardButton(text=str(date), callback_data=f"date_{idx}")
-        keyboard.append([button])
-
-    return InlineKeyboardMarkup(inline_keyboard=keyboard)
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+    except Exception as e:
+        print(e)
+        return None
 
 
 def create_keyboard_for_time(dates: list):
