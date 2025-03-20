@@ -78,6 +78,9 @@ async def get_lesson_for_each_couple() -> dict:
             money = {"USD": 0, "EUR": 0, "UAH": 0, "GBP": 0}
 
             for idx, lesson in enumerate(lessons):
+                if y_position < 50:
+                    c.showPage()
+                    y_position = height - 20
                 if lesson[0] != id_couple:
                     checker = True
                     c.setFillColor(colors.black)
