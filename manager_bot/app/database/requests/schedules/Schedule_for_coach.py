@@ -256,17 +256,16 @@ async def get_lesson_for_each_coach_for_date(date: str) -> None:
 
                 y_position -= 20
 
-                for line, lesson, idx in zip(lesson_string.split("\n"), lessons, range(len(lessons))):
-                    if lesson[6] and lesson[7].strftime("%d-%m") in ["27-03", "28-03", "29-03"] and lesson[1].strftime(
-                            "%H:%M") in ["17:30", "18:15"]:
+                for line, lesson, idx in zip(lesson_string.split("\n")[1:], lessons,
+                                             range(len(lesson_string.split("\n")))):
+                    if lesson[6] and lesson[7].strftime("%d-%m") in ["27-03", "28-03", "29-03"] and lesson[
+                        1].strftime("%H:%M") in ["17:30", "18:15"]:
                         c.setFillColor(colors.red)
                         if lesson[1].strftime("%H:%M") == "17:30":
-
                             c.drawString(20 * mm, y_position, f"• 17:15-17:45: Latin Lecture")
                             y_position -= 15
                             c.drawString(20 * mm, y_position, f"• 17:45-18:15: Latin Lecture")
                             y_position -= 15
-
                         else:
                             c.drawString(20 * mm, y_position, f"• 18:00-18:30: Latin Lecture")
                             y_position -= 15
@@ -290,23 +289,21 @@ async def get_lesson_for_each_coach_for_date(date: str) -> None:
 
                     c.setFont("Helvetica", 12)
 
-
-                    if lesson[1] != lessons[idx-1][2] and idx != 0:
+                    if idx != 0 and lesson[1] != lessons[idx - 1][2]:
                         c.setFillColor(colors.green)
-                        c.drawString(20 * mm, y_position, f"• {round((lesson[1] - lessons[idx-1][2]).total_seconds() / 60)} min Break")
+                        c.drawString(20 * mm, y_position,
+                                     f"• {round((lesson[1] - lessons[idx - 1][2]).total_seconds() / 60)} min Break")
                         y_position -= 15
 
                     c.setFillColor(colors.black)
                     if "No lesson" in line:
                         c.setFillColor(colors.blue)
-                    line.split(" & ")
                     c.drawString(20 * mm, y_position, line)
                     y_position -= 15
 
-                    if y_position < 50:
+                    if y_position < 50:  # Prevent writing beyond the page
                         c.showPage()
                         y_position = height - 20
-
                 c.showPage()
                 y_position = height - 20
 
