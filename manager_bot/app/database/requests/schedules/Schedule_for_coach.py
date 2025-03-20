@@ -148,7 +148,8 @@ async def get_lesson_for_each_coach() -> dict:
                         c.setFillColor(colors.black)
                         if "No lesson" in line:
                             c.setFillColor(colors.blue)
-                        print(line)
+                        if lesson[1].strftime("%H:%M") == "10:15":
+                            print(line)
                         c.drawString(20 * mm, y_position, line)
                         y_position -= 15
 
