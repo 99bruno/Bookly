@@ -198,7 +198,6 @@ async def get_lesson_for_each_coach_for_date(date: str) -> None:
             camp = camp.scalar_one_or_none()
 
             coaches = result.fetchall()
-            print(coaches)
             text = f"Coach Schedule for {camp.strip()} on {date}"
             draw_centered_text(c, text, y_position - 40, width, 50)
             y_position -= 120
